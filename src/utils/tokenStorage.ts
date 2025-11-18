@@ -1,3 +1,5 @@
+import type { User } from '../types/auth.types';
+
 const TOKEN_KEY = 'unimerch_token';
 const USER_KEY = 'unimerch_user';
 
@@ -14,12 +16,12 @@ export const tokenStorage = {
     localStorage.removeItem(TOKEN_KEY);
   },
 
-  getUser: (): any | null => {
+  getUser: (): User | null => {
     const user = localStorage.getItem(USER_KEY);
     return user ? JSON.parse(user) : null;
   },
 
-  setUser: (user: any): void => {
+  setUser: (user: User): void => {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   },
 

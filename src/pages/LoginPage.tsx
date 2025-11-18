@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AuthLayout from '../layout/AuthLayout';
+import Header from '../components/Header';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -72,12 +73,13 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <AuthLayout>
-      <div className="auth-header">
-        <div className="auth-logo">🛍️</div>
-        <h1 className="auth-title">Đăng nhập</h1>
-        <p className="auth-subtitle">Chào mừng trở lại với UniMerch!</p>
-      </div>
+    <>
+      <Header showAuthButtons={false} />
+      <AuthLayout>
+        <div className="auth-header">
+          <h1 className="auth-title">Chào mừng trở lại</h1>
+          <p className="auth-subtitle">Đăng nhập vào tài khoản Unimerch của bạn</p>
+        </div>
 
       <div className="auth-body">
         {apiError && (
@@ -163,7 +165,8 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
       </div>
-    </AuthLayout>
+      </AuthLayout>
+    </>
   );
 };
 
