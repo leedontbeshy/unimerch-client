@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AuthLayout from '../layout/AuthLayout';
+import Header from '../components/Header';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -105,12 +106,13 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <AuthLayout>
-      <div className="auth-header">
-        <div className="auth-logo">🛍️</div>
-        <h1 className="auth-title">Đăng ký</h1>
-        <p className="auth-subtitle">Tạo tài khoản UniMerch mới</p>
-      </div>
+    <>
+      <Header showAuthButtons={false} />
+      <AuthLayout>
+        <div className="auth-header">
+          <h1 className="auth-title">Tạo tài khoản</h1>
+          <p className="auth-subtitle">Tham gia cộng đồng Unimerch ngay hôm nay</p>
+        </div>
 
       <div className="auth-body">
         {apiError && (
@@ -295,7 +297,8 @@ const RegisterPage: React.FC = () => {
           </p>
         </div>
       </div>
-    </AuthLayout>
+      </AuthLayout>
+    </>
   );
 };
 

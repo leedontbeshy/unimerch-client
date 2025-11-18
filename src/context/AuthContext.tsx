@@ -4,7 +4,7 @@ import type { User, LoginRequest, RegisterRequest } from '../types/auth.types';
 import { authService } from '../services/authService';
 import { tokenStorage } from '../utils/tokenStorage';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;

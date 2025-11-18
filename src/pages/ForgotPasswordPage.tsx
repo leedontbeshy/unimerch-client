@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 import AuthLayout from '../layout/AuthLayout';
+import Header from '../components/Header';
 
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -49,12 +50,13 @@ const ForgotPasswordPage: React.FC = () => {
 
   if (success) {
     return (
-      <AuthLayout>
-        <div className="auth-header">
-          <div className="auth-logo">✉️</div>
-          <h1 className="auth-title">Kiểm tra email</h1>
-          <p className="auth-subtitle">Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu</p>
-        </div>
+      <>
+        <Header showAuthButtons={false} />
+        <AuthLayout>
+          <div className="auth-header">
+            <h1 className="auth-title">Kiểm tra email</h1>
+            <p className="auth-subtitle">Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu</p>
+          </div>
 
         <div className="auth-body">
           <div className="alert alert-success">
@@ -82,17 +84,19 @@ const ForgotPasswordPage: React.FC = () => {
             </p>
           </div>
         </div>
-      </AuthLayout>
+        </AuthLayout>
+      </>
     );
   }
 
   return (
-    <AuthLayout>
-      <div className="auth-header">
-        <div className="auth-logo">🔒</div>
-        <h1 className="auth-title">Quên mật khẩu</h1>
-        <p className="auth-subtitle">Nhập email để đặt lại mật khẩu</p>
-      </div>
+    <>
+      <Header showAuthButtons={false} />
+      <AuthLayout>
+        <div className="auth-header">
+          <h1 className="auth-title">Quên mật khẩu</h1>
+          <p className="auth-subtitle">Nhập email để đặt lại mật khẩu</p>
+        </div>
 
       <div className="auth-body">
         {error && (
@@ -139,7 +143,8 @@ const ForgotPasswordPage: React.FC = () => {
           </Link>
         </form>
       </div>
-    </AuthLayout>
+      </AuthLayout>
+    </>
   );
 };
 
