@@ -5,6 +5,7 @@ import FilterSection from '../components/products/FilterSection.tsx';
 import Pagination from '../components/products/Pagination.tsx';
 import productService from '../services/productService.ts';
 import type { Product, Category, ProductFilters } from '../types/product.types.ts';
+import { useCart } from '../hooks/useCart.ts';
 import '../css/products-page.css';
 
 const AllProductsPage: React.FC = () => {
@@ -12,6 +13,8 @@ const AllProductsPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cartMessage, setCartMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [addingProductId, setAddingProductId] = useState<number | null>(null);
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,11 +109,22 @@ const AllProductsPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Handle add to cart (placeholder)
-  const handleAddToCart = (product: Product) => {
-    // TODO: Implement cart functionality
-    console.log('Add to cart:', product);
-    alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
+  const { addToCart } = useCart({ autoFetch: false });
+
+  const handleAddToCart = async (product: Product) => {
+    if (!addToCart) return;
+    setCartMessage(null);
+    setAddingProductId(product.id);
+    try {
+      await addToCart(product.id, 1);
+      setCartMessage({ type: 'success', message: `Đã thêm "${product.name}" vào giỏ hàng.` });
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ?? 'Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.';
+      setCartMessage({ type: 'error', message });
+    } finally {
+      setAddingProductId(null);
+    }
   };
 
   return (
@@ -155,11 +169,18 @@ const AllProductsPage: React.FC = () => {
             </div>
           )}
 
+          {cartMessage && (
+            <div className={`products-alert products-alert--${cartMessage.type}`}>
+              <p>{cartMessage.message}</p>
+            </div>
+          )}
+
           {/* Product Grid */}
           <ProductGrid
             products={products}
             onAddToCart={handleAddToCart}
             isLoading={isLoading}
+            addingProductId={addingProductId}
           />
 
           {/* Pagination */}

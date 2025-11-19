@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Order } from '../types/order.types';
 import { orderService } from '../services/orderService';
+import Header from '../components/Header';
 import '../css/orders.css';
+
+const STATUS_TABS = [
+  { value: 'Pending', label: 'Chờ xác nhận' },
+  { value: 'Processing', label: 'Vận chuyển' },
+  { value: 'Shipped', label: 'Chờ giao hàng' },
+  { value: 'Delivered', label: 'Hoàn thành' },
+  { value: 'Cancelled', label: 'Đã huỷ' }
+];
 
 const currencyFormatter = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
@@ -24,6 +33,7 @@ const OrdersPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
+  const [tab, setTab] = useState<string>('Pending');
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
@@ -56,17 +66,57 @@ const OrdersPage: React.FC = () => {
     }
   };
 
+  // Count by status
+  const counts = STATUS_TABS.reduce((acc, s) => {
+    acc[s.value] = orders.filter(o => o.status === s.value).length;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Filtered orders for active tab
+  const filteredOrders = orders.filter(order => {
+    if (tab === 'Pending') return order.status === 'Pending';
+    if (tab === 'Processing') return order.status === 'Processing';
+    if (tab === 'Shipped') return order.status === 'Shipped';
+    if (tab === 'Delivered') return order.status === 'Delivered';
+    if (tab === 'Cancelled') return order.status === 'Cancelled';
+    return true;
+  });
+
   return (
+
     <section className="orders-page">
       <div className="orders-container">
         <div className="orders-header">
-          <p style={{ color: '#48d9a4', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-            Đơn hàng của tôi
-          </p>
-          <h1>Theo dõi trạng thái đơn hàng</h1>
-          <p style={{ color: '#9aa5b1', margin: 0 }}>
-            Kiểm tra lịch sử mua sắm và quản lý các đơn hàng gần đây.
-          </p>
+          <Header showAuthButtons={false} />
+          <h1>Đơn hàng của tôi</h1>
+        </div>
+
+        {/* Tabs with numbers */}
+        <div style={{ display: 'flex', background: 'rgba(24,42,51,0.57)', borderRadius: 18, overflow: 'hidden', marginBottom: 32 }}>
+          {STATUS_TABS.map((s, i) => (
+            <button
+              key={s.value}
+              style={{
+                flex: 1,
+                padding: '30px 10px',
+                border: 'none',
+                background: tab === s.value ? 'rgba(20,184,166,.14)' : 'transparent',
+                color: tab === s.value ? '#14b8a6' : '#c0cbd4',
+                fontWeight: 700,
+                fontSize: 17,
+                outline: 'none',
+                borderBottom: tab === s.value ? '4px solid #14b8a6' : '4px solid transparent',
+                borderRight: i < STATUS_TABS.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                letterSpacing: 0.01
+              }}
+              onClick={() => setTab(s.value)}
+            >
+              {s.label}
+              <span style={{ fontSize: '1.14em', marginTop: 5, fontWeight: 800, background: 'rgba(18,24,51,0.14)', borderRadius: 99, minWidth: 34, display: 'inline-block', color: tab === s.value ? '#14b8a6' : '#5eead4' }}>{counts[s.value] ?? 0}</span>
+            </button>
+          ))}
         </div>
 
         {error && <div className="orders-alert error">{error}</div>}
@@ -74,45 +124,45 @@ const OrdersPage: React.FC = () => {
 
         {isLoading ? (
           <div className="order-empty">Đang tải đơn hàng...</div>
-        ) : orders.length === 0 ? (
-          <div className="order-empty">
-            Bạn chưa có đơn hàng nào. Hãy mua sắm và quay lại nhé!
-          </div>
-        ) : (
-          <div className="orders-list">
-            {orders.map((order) => (
-              <article className="order-card" key={order.id}>
-                <div className="order-info">
-                  <h3>{order.orderNumber}</h3>
-                  <span className={`status-pill status-${order.status}`}>{order.status}</span>
-                  <span className="order-meta">Ngày đặt: {formatDate(order.orderDate)}</span>
-                </div>
+        ) :
+          filteredOrders.length === 0 ? (
+            <div className="order-empty">
+              Không có đơn hàng nào ở trạng thái này.
+            </div>
+          ) : (
+            <div className="orders-list">
+              {filteredOrders.map(order => (
+                <article className="order-card" key={order.id}>
+                  <div className="order-info">
+                    <h3>{order.orderNumber}</h3>
+                    <span className={`status-pill status-${order.status}`}>{order.status}</span>
+                    <span className="order-meta">Ngày đặt: {formatDate(order.orderDate)}</span>
+                  </div>
+                  <div className="order-info">
+                    <span className="order-meta">Tổng tiền</span>
+                    <strong>{currencyFormatter.format(order.totalAmount)}</strong>
+                  </div>
 
-                <div className="order-info">
-                  <span className="order-meta">Tổng tiền</span>
-                  <strong>{currencyFormatter.format(order.totalAmount)}</strong>
-                </div>
-
-                <div className="order-actions">
-                  <button
-                    className="ghost-button"
-                    onClick={() => navigate(`/orders/${order.id}`)}
-                  >
-                    Xem chi tiết
-                  </button>
-                  {order.status === 'Pending' && (
+                  <div className="order-actions">
                     <button
-                      className="outline-button danger-button"
-                      onClick={() => handleCancel(order.id)}
-                      disabled={actionLoadingId === order.id}
+                      className="ghost-button"
+                      onClick={() => navigate(`/orders/${order.id}`)}
                     >
-                      {actionLoadingId === order.id ? 'Đang hủy...' : 'Hủy đơn'}
+                      Xem chi tiết
                     </button>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
+                    {order.status === 'Pending' && (
+                      <button
+                        className="outline-button danger-button"
+                        onClick={() => handleCancel(order.id)}
+                        disabled={actionLoadingId === order.id}
+                      >
+                        {actionLoadingId === order.id ? 'Đang hủy...' : 'Hủy đơn'}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
         )}
       </div>
     </section>

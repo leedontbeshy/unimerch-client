@@ -6,7 +6,24 @@
   justify-content: center;
   font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
 }
+.checkout-button.neon {
+  background: linear-gradient(120deg, #43e97b 0%, #38f9d7 100%);
+  color: #fff;
+  border: none;
+  font-size: 1.12rem;
+  letter-spacing: .04em;
+  font-weight: 700;
+  box-shadow: 0 2px 18px 0 rgba(52,249,215,.25), 0 1.5px 5px #23a0ff22;
+  border-radius: 999px;
+  padding: 16px 0;
+  transition: background .18s, box-shadow .15s, transform .13s;
+}
 
+.checkout-button.neon:hover:not(:disabled) {
+  background: linear-gradient(110deg, #1de9b6 15%, #1dc8e9 100%);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 5px 32px 0 rgba(52,201,249,.35), 0 6px 32px #48d9a466;
+}
 .cart-container {
   width: 100%;
   max-width: 1100px;

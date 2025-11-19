@@ -8,7 +8,11 @@ const EMPTY_CART: Cart = {
   totalPrice: 0
 };
 
-export const useCart = () => {
+interface UseCartOptions {
+  autoFetch?: boolean;
+}
+
+export const useCart = ({ autoFetch = true }: UseCartOptions = {}) => {
   const [cart, setCart] = useState<Cart>(EMPTY_CART);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +33,31 @@ export const useCart = () => {
   }, []);
 
   useEffect(() => {
+    if (!autoFetch) {
+      setIsLoading(false);
+      return;
+    }
     void fetchCart();
-  }, [fetchCart]);
+  }, [autoFetch, fetchCart]);
+
+  const addToCart = useCallback(
+    async (productId: number, quantity: number = 1) => {
+      setIsLoading(true);
+      try {
+        const updatedCart = await cartService.addToCart(productId, quantity);
+        setCart(updatedCart);
+        setError(null);
+        setSuccessMessage('Đã thêm sản phẩm vào giỏ hàng!');
+        return updatedCart;
+      } catch (err) {
+        setError('Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.');
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   const updateQuantity = useCallback(
     async (productId: number, nextQuantity: number) => {
@@ -39,7 +66,7 @@ export const useCart = () => {
         const updatedCart = await cartService.updateCartItemQuantity(productId, nextQuantity);
         setCart(updatedCart);
         setError(null);
-      setSuccessMessage(null);
+        setSuccessMessage(null);
       } catch (err) {
         setError('Không thể cập nhật số lượng. Vui lòng thử lại.');
         throw err;
@@ -104,6 +131,7 @@ export const useCart = () => {
     error,
     successMessage,
     refreshCart: fetchCart,
+    addToCart,
     increaseQuantity,
     decreaseQuantity,
     removeItem,

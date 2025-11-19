@@ -1,120 +1,101 @@
-import type { AxiosResponse } from 'axios';
 import api from './api';
-import type { Cart } from '../types/cart.types';
+import type { Cart, CartItem } from '../types/cart.types';
 import type { Product } from '../types/product.types';
-import { productService } from './productService';
 
-const INITIAL_CART: Cart = {
-  items: [],
-  totalPrice: 0
-};
+const CART_BASE_PATH = '/api/cart';
 
-let cartState: Cart = { ...INITIAL_CART };
+interface CartItemResponse {
+  id?: number;
+  product_id: number;
+  quantity: number;
+  product?: Product;
+  name?: string;
+  price?: number;
+  image?: string;
+  image_url?: string;
+}
 
-const delay = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
+interface CartApiData {
+  items?: CartItemResponse[];
+  total_price?: number;
+  total?: number;
+}
 
-const mockApiRequest = async <T>(method: 'get' | 'post', data: T, ms = 250): Promise<T> => {
-  const adapter = async (config: any): Promise<AxiosResponse<T>> => {
-    await delay(ms);
+interface CartApiEnvelope {
+  success?: boolean;
+  message?: string;
+  data: CartApiData;
+}
+
+type CartApiResponse = CartApiData | CartApiEnvelope;
+
+const toProduct = (item: CartItemResponse): Product => {
+  if (item.product) {
     return {
-      data,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config,
-      request: {}
+      ...item.product,
+      image: item.product.image ?? item.product.image_url ?? ''
     };
+  }
+
+  return {
+    id: item.product_id,
+    name: item.name ?? 'Sản phẩm',
+    price: item.price ?? 0,
+    image: item.image ?? item.image_url ?? ''
   };
-
-  const response =
-    method === 'get'
-      ? await api.get<T>('/mock/cart', { adapter })
-      : await api.post<T>('/mock/cart', {}, { adapter });
-
-  return response.data;
 };
 
-const cloneCart = (): Cart => ({
-  items: cartState.items.map((item) => ({ ...item, product: { ...item.product } })),
-  totalPrice: cartState.totalPrice
+const toCartItem = (item: CartItemResponse): CartItem => ({
+  product: toProduct(item),
+  quantity: item.quantity
 });
 
-const recalculateTotal = () => {
-  cartState.totalPrice = cartState.items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
-};
+const calculateTotal = (items: CartItem[]): number =>
+  items.reduce((sum, cartItem) => sum + cartItem.product.price * cartItem.quantity, 0);
 
-const seedCart = async () => {
-  if (cartState.items.length === 0) {
-    const products = await productService.getMockProducts();
-    cartState.items = products.slice(0, 2).map((product, index) => ({
-      product,
-      quantity: index + 1
-    }));
-    recalculateTotal();
-  }
-};
+const extractCartPayload = (payload: CartApiResponse): CartApiData =>
+  'data' in payload ? payload.data ?? {} : payload ?? {};
 
-const findProduct = async (productId: number): Promise<Product> => {
-  const products = await productService.getMockProducts();
-  const product = products.find((p) => p.id === productId);
-  if (!product) {
-    throw new Error('Sản phẩm không tồn tại');
-  }
-  return product;
+const mapToCart = (payload: CartApiResponse): Cart => {
+  const data = extractCartPayload(payload);
+  const items = (data.items ?? []).map(toCartItem);
+  const totalPrice = data.total_price ?? data.total ?? calculateTotal(items);
+
+  return {
+    items,
+    totalPrice
+  };
 };
 
 export const cartService = {
   async getCart(): Promise<Cart> {
-    await seedCart();
-    return mockApiRequest('get', cloneCart());
+    const response = await api.get<CartApiResponse>(CART_BASE_PATH);
+    return mapToCart(response.data);
   },
 
   async addToCart(productId: number, quantity: number): Promise<Cart> {
-    await seedCart();
-    const product = await findProduct(productId);
-    const existingItem = cartState.items.find((item) => item.product.id === productId);
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cartState.items.push({ product, quantity });
-    }
-
-    recalculateTotal();
-    return mockApiRequest('post', cloneCart());
+    const response = await api.post<CartApiResponse>(`${CART_BASE_PATH}/items`, {
+      product_id: productId,
+      quantity
+    });
+    return mapToCart(response.data);
   },
 
   async updateCartItemQuantity(productId: number, quantity: number): Promise<Cart> {
-    await seedCart();
-    const itemIndex = cartState.items.findIndex((item) => item.product.id === productId);
-
-    if (itemIndex === -1) {
-      throw new Error('Không tìm thấy sản phẩm trong giỏ hàng');
-    }
-
-    if (quantity <= 0) {
-      cartState.items.splice(itemIndex, 1);
-    } else {
-      cartState.items[itemIndex].quantity = quantity;
-    }
-
-    recalculateTotal();
-    return mockApiRequest('post', cloneCart());
+    const response = await api.patch<CartApiResponse>(`${CART_BASE_PATH}/items/${productId}`, {
+      quantity
+    });
+    return mapToCart(response.data);
   },
 
   async removeFromCart(productId: number): Promise<Cart> {
-    await seedCart();
-    cartState.items = cartState.items.filter((item) => item.product.id !== productId);
-    recalculateTotal();
-    return mockApiRequest('post', cloneCart());
+    const response = await api.delete<CartApiResponse>(`${CART_BASE_PATH}/items/${productId}`);
+    return mapToCart(response.data);
   },
 
   async clearCart(): Promise<Cart> {
-    cartState = { ...INITIAL_CART };
-    return mockApiRequest('post', cloneCart());
+    const response = await api.delete<CartApiResponse>(CART_BASE_PATH);
+    return mapToCart(response.data);
   }
 };
 

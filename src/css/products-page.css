@@ -110,6 +110,29 @@
   font-size: 16px;
 }
 
+.products-alert {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin: 12px 0 24px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.products-alert--success {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.products-alert--error {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .products-content__container {

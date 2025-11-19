@@ -7,12 +7,14 @@ interface ProductGridProps {
   products: Product[];
   onAddToCart?: (product: Product) => void;
   isLoading?: boolean;
+  addingProductId?: number | null;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({ 
   products, 
   onAddToCart,
-  isLoading = false 
+  isLoading = false,
+  addingProductId = null
 }) => {
   if (isLoading) {
     return (
@@ -44,6 +46,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           key={product.id} 
           product={product} 
           onAddToCart={onAddToCart}
+          isAdding={addingProductId === product.id}
         />
       ))}
     </div>

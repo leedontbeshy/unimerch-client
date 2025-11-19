@@ -104,17 +104,32 @@ const CartPage: React.FC = () => {
             </div>
 
             <footer className="cart-footer">
-              <div className="cart-total">
-                Tổng cộng: {currencyFormatter.format(cart.totalPrice)}
-              </div>
-              <button
-                className="checkout-button"
-                onClick={handleCheckout}
-                disabled={cart.items.length === 0 || isLoading}
+            <div className="cart-total">
+              Tổng cộng: {currencyFormatter.format(cart.totalPrice)}
+            </div>
+            <button
+              className="checkout-button neon"
+              onClick={handleCheckout}
+              disabled={cart.items.length === 0 || isLoading}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                fontSize: '1.1rem'
+              }}
+            >
+              <svg 
+                style={{ marginBottom: 2 }} 
+                width="24" height="24" fill="none" stroke="#fff"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                viewBox="0 0 24 24"
               >
-                Tiến hành thanh toán
-              </button>
-            </footer>
+                <path d="M17 18a5 5 0 00-10 0m10 0H7m10 0v1a2 2 0 01-2 2H9a2 2 0 01-2-2v-1M2 15V7a2 2 0 012-2h16a2 2 0 012 2v8"></path>
+              </svg>
+              Thanh toán ngay
+            </button>
+          </footer>
           </>
         )}
       </div>

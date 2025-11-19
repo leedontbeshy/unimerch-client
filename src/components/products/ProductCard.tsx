@@ -5,13 +5,15 @@ import '../../css/product.css';
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
+  isAdding?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, isAdding = false }) => {
   const hasDiscount = product.discount_price && product.discount_price < product.price;
   const discountPercentage = hasDiscount
     ? Math.round(((product.price - product.discount_price!) / product.price) * 100)
     : 0;
+  const imageSrc = product.image_url || product.image;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -35,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       
       <div className="product-card__image">
         <img 
-          src={product.image_url} 
+          src={imageSrc} 
           alt={product.name}
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/placeholder-product.png';
@@ -60,9 +62,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         <button
           className="product-card__button"
           onClick={handleAddToCart}
-          disabled={product.status !== 'available'}
+          disabled={product.status !== 'available' || isAdding}
         >
-          {product.status === 'available' ? 'Thêm vào giỏ' : 'Hết hàng'}
+          {isAdding ? 'Đang thêm...' : product.status === 'available' ? 'Thêm vào giỏ' : 'Hết hàng'}
         </button>
       </div>
     </div>
