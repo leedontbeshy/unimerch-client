@@ -1,0 +1,124 @@
+/* Products Page Styles */
+.products-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+}
+
+/* Hero Section */
+.products-hero {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  padding: 80px 20px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.products-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(20, 184, 166, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.products-hero__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.products-hero__title {
+  font-size: 56px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.products-hero__highlight {
+  color: #14b8a6;
+  display: block;
+}
+
+.products-hero__subtitle {
+  font-size: 18px;
+  color: #9ca3af;
+  margin: 0 0 40px 0;
+  letter-spacing: 2px;
+}
+
+.products-hero__search {
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .products-hero {
+    padding: 60px 20px 40px;
+  }
+
+  .products-hero__title {
+    font-size: 36px;
+  }
+
+  .products-hero__subtitle {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-hero__title {
+    font-size: 28px;
+  }
+
+  .products-hero__subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Products Content */
+.products-content {
+  padding: 40px 20px 80px;
+}
+
+.products-content__container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.products-count {
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.products-error {
+  padding: 40px 20px;
+  text-align: center;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.products-error p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .products-content__container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-content {
+    padding: 20px 16px 60px;
+  }
+}

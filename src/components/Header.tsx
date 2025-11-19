@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ showAuthButtons = true }) => {
         
         <nav className="header-nav">
           <Link to="/" className="nav-link">TRANG CHỦ</Link>
-          <Link to="/products" className="nav-link">TẤT CẢ SẢN PHẨM</Link>
+          <Link to="/all-products" className="nav-link">TẤT CẢ SẢN PHẨM</Link>
           <Link to="/orders" className="nav-link">ĐƠN HÀNG</Link>
         </nav>
 
