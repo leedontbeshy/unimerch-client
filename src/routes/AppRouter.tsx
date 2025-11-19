@@ -7,6 +7,10 @@ import ProtectedRoute from './ProtectedRoute';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import CartPage from '../pages/CartPage';
+import CategoryPage from '../pages/CategoryPage';
+import OrdersPage from '../pages/OrdersPage';
+import OrderDetailsPage from '../pages/OrderDetailsPage';
 
 // Placeholder Home Page
 import { useAuth } from '../hooks/useAuth';
@@ -58,6 +62,46 @@ const AppRouter: React.FC = () => {
             element={
               <ProtectedRoute>
                 <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <ProtectedRoute>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/:slug"
+            element={
+              <ProtectedRoute>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <OrdersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <ProtectedRoute>
+                <OrderDetailsPage />
               </ProtectedRoute>
             }
           />
