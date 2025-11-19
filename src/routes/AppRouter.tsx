@@ -4,6 +4,13 @@ import { AuthProvider } from '../context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 
 // Auth Pages
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import CartPage from '../pages/CartPage';
+import CategoryPage from '../pages/CategoryPage';
+import OrdersPage from '../pages/OrdersPage';
+import OrderDetailsPage from '../pages/OrderDetailsPage';
 import LoginPage from '../pages/LoginPage.tsx';
 import RegisterPage from '../pages/RegisterPage.tsx';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage.tsx';
@@ -105,6 +112,46 @@ const AppRouter: React.FC = () => {
             element={
               <ProtectedRoute>
                 <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <ProtectedRoute>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/:slug"
+            element={
+              <ProtectedRoute>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <OrdersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <ProtectedRoute>
+                <OrderDetailsPage />
               </ProtectedRoute>
             }
           />
