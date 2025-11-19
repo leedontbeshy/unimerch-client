@@ -4,10 +4,11 @@ import { useAuth } from '../hooks/useAuth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  requireAdmin?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin = false }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
     return (
@@ -16,14 +17,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundColor: '#F5F7F5'
+        backgroundColor: 'var(--bg-black, #000000)'
       }}>
         <div className="spinner" style={{
           width: '40px',
           height: '40px',
-          borderWidth: '4px',
-          borderColor: '#9DC183',
-          borderTopColor: 'transparent'
+          border: '4px solid rgba(0, 229, 204, 0.3)',
+          borderTop: '4px solid var(--neon-cyan, #00E5CC)',
+          borderRadius: '50%'
         }}></div>
       </div>
     );
@@ -31,6 +32,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Check admin permission if required
+  if (requireAdmin && user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

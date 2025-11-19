@@ -59,11 +59,17 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await login({
+      const user = await login({
         email: formData.email,
         password: formData.password,
       });
-      navigate('/');
+      
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error: unknown) {
       const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
       setApiError(message);

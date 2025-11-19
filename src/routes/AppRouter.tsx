@@ -11,30 +11,62 @@ import CartPage from '../pages/CartPage';
 import CategoryPage from '../pages/CategoryPage';
 import OrdersPage from '../pages/OrdersPage';
 import OrderDetailsPage from '../pages/OrderDetailsPage';
+import LoginPage from '../pages/LoginPage.tsx';
+import RegisterPage from '../pages/RegisterPage.tsx';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage.tsx';
+
+// Product Pages
+import AllProductsPage from '../pages/AllProductsPage.tsx';
+
+// Admin Pages
+import AdminLayout from '../layout/AdminLayout';
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import UsersManagement from '../pages/admin/UsersManagement';
+import ProductsManagement from '../pages/admin/ProductsManagement';
+import OrdersManagement from '../pages/admin/OrdersManagement';
+import PaymentsManagement from '../pages/admin/PaymentsManagement';
+import ReviewsManagement from '../pages/admin/ReviewsManagement';
 
 // Placeholder Home Page
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth.ts';
 
 const HomePage: React.FC = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'system-ui' }}>
-      <h1 style={{ color: '#688F5D' }}>🎉 Chào mừng đến với UniMerch!</h1>
-      <p style={{ color: '#7A8A78', marginTop: '16px' }}>
+    <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'system-ui', minHeight: '100vh', background: 'var(--bg-black)', color: 'var(--text-white)' }}>
+      <h1 style={{ color: 'var(--neon-cyan)' }}>🎉 Chào mừng đến với UniMerch!</h1>
+      <p style={{ color: 'var(--text-gray)', marginTop: '16px' }}>
         Xin chào, <strong>{user?.fullName}</strong>!
       </p>
-      <p style={{ color: '#7A8A78' }}>Email: {user?.email}</p>
-      <p style={{ color: '#7A8A78' }}>Role: {user?.role}</p>
+      <p style={{ color: 'var(--text-gray)' }}>Email: {user?.email}</p>
+      <p style={{ color: 'var(--text-gray)' }}>Role: {user?.role}</p>
+      {user?.role === 'admin' && (
+        <a href="/admin" style={{ 
+          display: 'inline-block',
+          marginTop: '24px', 
+          padding: '12px 24px',
+          background: 'var(--neon-cyan)',
+          color: 'var(--bg-black)',
+          textDecoration: 'none',
+          borderRadius: '10px',
+          fontSize: '16px',
+          fontWeight: '700',
+          cursor: 'pointer',
+          marginRight: '12px'
+        }}>
+          🎛️ Admin Panel
+        </a>
+      )}
       <button
         onClick={logout}
         style={{
           marginTop: '24px',
           padding: '12px 24px',
-          background: '#9DC183',
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
+          background: 'var(--bg-input)',
+          color: 'var(--text-white)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: '10px',
           fontSize: '16px',
           fontWeight: '600',
           cursor: 'pointer'
@@ -55,6 +87,24 @@ const AppRouter: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/all-products" element={<AllProductsPage />} />
+
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requireAdmin>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<UsersManagement />} />
+            <Route path="products" element={<ProductsManagement />} />
+            <Route path="orders" element={<OrdersManagement />} />
+            <Route path="payments" element={<PaymentsManagement />} />
+            <Route path="reviews" element={<ReviewsManagement />} />
+          </Route>
 
           {/* Protected Routes */}
           <Route

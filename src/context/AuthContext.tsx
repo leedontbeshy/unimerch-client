@@ -9,7 +9,7 @@ export interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (credentials: LoginRequest) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<User>;
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: User) => void;
@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (credentials: LoginRequest) => {
+  const login = async (credentials: LoginRequest): Promise<User> => {
     const response = await authService.login(credentials);
     const { user, token } = response.data;
 
@@ -46,6 +46,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     tokenStorage.setUser(user);
     setToken(token);
     setUser(user);
+    
+    return user;
   };
 
   const register = async (userData: RegisterRequest) => {
