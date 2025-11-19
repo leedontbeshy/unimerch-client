@@ -4,12 +4,15 @@ import { AuthProvider } from '../context/AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 
 // Auth Pages
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
-import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import LoginPage from '../pages/LoginPage.tsx';
+import RegisterPage from '../pages/RegisterPage.tsx';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage.tsx';
+
+// Product Pages
+import AllProductsPage from '../pages/AllProductsPage.tsx';
 
 // Placeholder Home Page
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth.ts';
 
 const HomePage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -51,6 +54,7 @@ const AppRouter: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/all-products" element={<AllProductsPage />} />
 
           {/* Protected Routes */}
           <Route
