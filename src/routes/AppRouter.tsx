@@ -11,9 +11,6 @@ import CartPage from '../pages/CartPage';
 import CategoryPage from '../pages/CategoryPage';
 import OrdersPage from '../pages/OrdersPage';
 import OrderDetailsPage from '../pages/OrderDetailsPage';
-import LoginPage from '../pages/LoginPage.tsx';
-import RegisterPage from '../pages/RegisterPage.tsx';
-import ForgotPasswordPage from '../pages/ForgotPasswordPage.tsx';
 
 // Product Pages
 import AllProductsPage from '../pages/AllProductsPage.tsx';
