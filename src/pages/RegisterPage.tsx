@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AuthLayout from '../layout/AuthLayout';
 import Header from '../components/Header';
-import { registerWithEmail, signInWithGoogle } from '../services/firebaseAuthService';
+import { signInWithGoogle } from '../services/firebaseAuthService';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -88,14 +88,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Register with Firebase first
-      const firebaseUser = await registerWithEmail(
-        formData.email,
-        formData.password,
-        formData.fullName
-      );
-      
-      // Then register with your backend API
+      // Chỉ dùng Backend API cho đăng ký thông thường
       await register({
         username: formData.username,
         email: formData.email,
@@ -106,10 +99,9 @@ const RegisterPage: React.FC = () => {
         address: formData.address || undefined,
       });
       
-      console.log('Firebase User registered:', firebaseUser);
       navigate('/');
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Đăng ký thất bại. Vui lòng thử lại.';
+      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.';
       setApiError(message);
     } finally {
       setIsLoading(false);
@@ -121,12 +113,25 @@ const RegisterPage: React.FC = () => {
     setApiError('');
     
     try {
+      // Đăng nhập Firebase Google
       const firebaseUser = await signInWithGoogle();
-      console.log('Google User registered:', firebaseUser);
       
-      // You can sync with your backend API here if needed
-      // Create user in your backend with Google credentials
+      // Lấy Firebase ID Token
+      const idToken = await firebaseUser.getIdToken();
       
+      // Tự động tạo username từ email (có thể customize)
+      const username = firebaseUser.email?.split('@')[0] || 'user' + Date.now();
+      
+      // Đăng ký với Backend API - gửi Firebase token
+      await register({
+        username: username,
+        email: firebaseUser.email || '',
+        password: '', // Không cần password vì dùng Firebase
+        fullName: firebaseUser.displayName || '',
+        firebaseToken: idToken,
+      });
+      
+      console.log('Google User registered and synced:', firebaseUser);
       navigate('/');
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Đăng ký Google thất bại';

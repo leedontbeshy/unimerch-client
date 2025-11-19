@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AuthLayout from '../layout/AuthLayout';
 import Header from '../components/Header';
-import { loginWithEmail, signInWithGoogle } from '../services/firebaseAuthService';
+import { signInWithGoogle } from '../services/firebaseAuthService';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -60,16 +60,11 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Login with Firebase first
-      const firebaseUser = await loginWithEmail(formData.email, formData.password);
-      
-      // Then login with your backend API to get user role and other data
+      // Chỉ dùng Backend API cho đăng nhập thông thường
       const user = await login({
         email: formData.email,
         password: formData.password,
       });
-      
-      console.log('Firebase User:', firebaseUser);
       
       // Redirect based on user role
       if (user.role === 'admin') {
@@ -78,7 +73,7 @@ const LoginPage: React.FC = () => {
         navigate('/');
       }
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Đăng nhập thất bại. Vui lòng thử lại.';
+      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
       setApiError(message);
     } finally {
       setIsLoading(false);
@@ -90,13 +85,27 @@ const LoginPage: React.FC = () => {
     setApiError('');
     
     try {
+      // Đăng nhập Firebase Google
       const firebaseUser = await signInWithGoogle();
-      console.log('Google User:', firebaseUser);
       
-      // You can sync with your backend API here if needed
-      // await login({ email: firebaseUser.email, ... });
+      // Lấy Firebase ID Token để gửi cho backend xác thực
+      const idToken = await firebaseUser.getIdToken();
       
-      navigate('/');
+      // Sync với Backend API - gửi Firebase token để backend verify và tạo/login user
+      const user = await login({
+        email: firebaseUser.email || '',
+        password: '', // Không cần password vì dùng Firebase token
+        firebaseToken: idToken, // Backend sẽ verify token này
+      });
+      
+      console.log('Google User synced:', user);
+      
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Đăng nhập Google thất bại';
       setApiError(message);

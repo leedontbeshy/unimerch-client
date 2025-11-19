@@ -22,6 +22,7 @@ export interface AuthResponse {
 export interface LoginRequest {
   email: string;
   password: string;
+  firebaseToken?: string; // Optional Firebase token for Google/Social login
 }
 
 export interface RegisterRequest {
@@ -32,6 +33,7 @@ export interface RegisterRequest {
   studentId?: string;
   phone?: string;
   address?: string;
+  firebaseToken?: string; // Optional Firebase token for Google/Social registration
 }
 
 export interface ForgotPasswordRequest {
