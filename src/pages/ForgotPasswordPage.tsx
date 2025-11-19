@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { authService } from '../services/authService';
 import AuthLayout from '../layout/AuthLayout';
 import Header from '../components/Header';
+import { resetPassword } from '../services/firebaseAuthService';
 
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -38,10 +39,15 @@ const ForgotPasswordPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Send password reset email via Firebase
+      await resetPassword(email);
+      
+      // Also call your backend if needed
       await authService.forgotPassword({ email });
+      
       setSuccess(true);
     } catch (error: unknown) {
-      const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Có lỗi xảy ra. Vui lòng thử lại.';
+      const message = error instanceof Error ? error.message : 'Có lỗi xảy ra. Vui lòng thử lại.';
       setError(message);
     } finally {
       setIsLoading(false);
