@@ -24,6 +24,13 @@ import OrdersManagement from '../pages/admin/OrdersManagement';
 import PaymentsManagement from '../pages/admin/PaymentsManagement';
 import ReviewsManagement from '../pages/admin/ReviewsManagement';
 
+// Seller Pages
+import SellerLayout from '../layout/SellerLayout';
+import SellerDashboard from '../pages/seller/SellerDashboard';
+import SellerProductsManagement from '../pages/seller/SellerProductsManagement';
+import SellerOrdersManagement from '../pages/seller/SellerOrdersManagement';
+import SellerRatingsManagement from '../pages/seller/SellerRatingsManagement';
+
 // Placeholder Home Page
 import { useAuth } from '../hooks/useAuth.ts';
 
@@ -101,6 +108,22 @@ const AppRouter: React.FC = () => {
             <Route path="orders" element={<OrdersManagement />} />
             <Route path="payments" element={<PaymentsManagement />} />
             <Route path="reviews" element={<ReviewsManagement />} />
+          </Route>
+
+          {/* Seller Routes */}
+          <Route
+            path="/seller"
+            element={
+              <ProtectedRoute>
+                <SellerLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<SellerDashboard />} />
+            <Route path="products" element={<SellerProductsManagement />} />
+            <Route path="orders" element={<SellerOrdersManagement />} />
+            <Route path="ratings" element={<SellerRatingsManagement />} />
+            <Route path="storefront" element={<Navigate to="/" replace />} />
           </Route>
 
           {/* Protected Routes */}
