@@ -59,17 +59,13 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const user = await login({
+      await login({
         email: formData.email,
         password: formData.password,
       });
       
-      // Redirect based on user role
-      if (user.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/seller');
-      }
+      // Redirect to all products page after successful login
+      navigate('/all-products');
     } catch (error: unknown) {
       const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
       setApiError(message);

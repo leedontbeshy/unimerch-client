@@ -1,0 +1,340 @@
+/* Theme-specific overrides and enhancements */
+
+/* Ensure smooth transitions for theme-aware elements */
+body,
+.main-header,
+.admin-sidebar,
+.seller-sidebar,
+.product-card,
+.stat-card,
+.content-card,
+.filter-tag,
+.modal-content,
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Light theme specific adjustments */
+:root[data-theme="light"] {
+  /* Adjust shadow for light mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Dark theme specific adjustments */
+:root[data-theme="dark"] {
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Light theme text overrides for better readability */
+:root[data-theme="light"] .product-card__title,
+:root[data-theme="light"] .stat-card-title,
+:root[data-theme="light"] .modal-title,
+:root[data-theme="light"] .page-title,
+:root[data-theme="light"] .card-title,
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] h4,
+:root[data-theme="light"] h5,
+:root[data-theme="light"] h6 {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - make ALL stat card text dark */
+:root[data-theme="light"] .stat-card * {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - stat card subtitles */
+:root[data-theme="light"] .stat-card-subtitle {
+  color: #666666 !important;
+}
+
+/* Light theme secondary text */
+:root[data-theme="light"] .product-card__price--original,
+:root[data-theme="light"] .order-meta,
+:root[data-theme="light"] .activity-description {
+  color: #666666 !important;
+}
+
+/* Light theme borders - more visible */
+:root[data-theme="light"] .product-card,
+:root[data-theme="light"] .cart-container,
+:root[data-theme="light"] .order-card,
+:root[data-theme="light"] .stat-card,
+:root[data-theme="light"] .content-card {
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Light theme - stat cards background */
+:root[data-theme="light"] .stat-card {
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Light theme - content cards background */
+:root[data-theme="light"] .content-card {
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Light theme - dashboard hero/header backgrounds */
+:root[data-theme="light"] .products-hero,
+:root[data-theme="light"] .category-hero {
+  background: linear-gradient(180deg, #f5f5f5 0%, #ffffff 100%) !important;
+}
+
+/* Light theme hover effects */
+:root[data-theme="light"] .product-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Light theme table rows */
+:root[data-theme="light"] .data-table td {
+  color: #1a1a1a !important;
+}
+
+/* Light theme nav links */
+:root[data-theme="light"] .nav-link {
+  color: #4a4a4a !important;
+}
+
+:root[data-theme="light"] .nav-link:hover {
+  color: #00E5CC !important;
+}
+
+/* Light theme sidebar */
+:root[data-theme="light"] .sidebar-link {
+  color: #4a4a4a !important;
+}
+
+:root[data-theme="light"] .sidebar-link:hover,
+:root[data-theme="light"] .sidebar-link.active {
+  color: #00E5CC !important;
+}
+
+/* Light theme header logo */
+:root[data-theme="light"] .header-logo {
+  color: #1a1a1a !important;
+}
+
+/* Light theme filter and pagination */
+:root[data-theme="light"] .filter-select,
+:root[data-theme="light"] .pagination-btn,
+:root[data-theme="light"] .pagination-number {
+  color: #1a1a1a !important;
+}
+
+/* Light theme stat card values - keep cyan visible but darker */
+:root[data-theme="light"] .stat-card-value {
+  color: #008B7A !important;
+  text-shadow: none !important;
+}
+
+/* Light theme - hero section text on admin/pages */
+:root[data-theme="light"] .products-hero__title,
+:root[data-theme="light"] .products-hero__subtitle {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - all dashboard titles */
+:root[data-theme="light"] .page-header h1,
+:root[data-theme="light"] .page-header h2,
+:root[data-theme="light"] .dashboard-title {
+  color: #1a1a1a !important;
+}
+
+/* Light theme header background - more opaque */
+:root[data-theme="light"] .main-header {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme sidebar background */
+:root[data-theme="light"] .admin-sidebar,
+:root[data-theme="light"] .seller-sidebar {
+  background: rgba(245, 245, 245, 0.95) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme modal overlay */
+:root[data-theme="light"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Light theme category cards text */
+:root[data-theme="light"] .category-card h3,
+:root[data-theme="light"] .category-hero h1 {
+  color: #1a1a1a !important;
+}
+
+/* Light theme for sidebar overlay */
+:root[data-theme="light"] .sidebar-overlay {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Smooth animation for theme toggle */
+html {
+  transition: background-color 0.3s ease;
+}
+
+/* Prevent layout shift during theme transition */
+body * {
+  transition-property: background-color, color, border-color, box-shadow, opacity;
+}
+
+/* Light theme - better contrast for disabled states */
+:root[data-theme="light"] button:disabled,
+:root[data-theme="light"] .btn:disabled {
+  opacity: 0.5 !important;
+  color: #999 !important;
+}
+
+/* Light theme - adjust input placeholders */
+:root[data-theme="light"] input::placeholder,
+:root[data-theme="light"] textarea::placeholder,
+:root[data-theme="light"] select::placeholder {
+  color: #999 !important;
+}
+
+/* Light theme - filter tags */
+:root[data-theme="light"] .filter-tag {
+  border-color: #d0d0d0 !important;
+  color: #1a1a1a !important;
+}
+
+:root[data-theme="light"] .filter-tag:hover {
+  border-color: #00B8A3 !important;
+  color: #00B8A3 !important;
+}
+
+:root[data-theme="light"] .filter-tag--active {
+  background: #00B8A3 !important;
+  border-color: #00B8A3 !important;
+  color: #ffffff !important;
+}
+
+/* Light theme - category cards */
+:root[data-theme="light"] .category-card {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme - search inputs */
+:root[data-theme="light"] .search-input,
+:root[data-theme="light"] .filter-section__sort-select {
+  background: #f5f5f5 !important;
+  color: #1a1a1a !important;
+  border-color: #d0d0d0 !important;
+}
+
+/* Light theme - all card backgrounds should be white */
+:root[data-theme="light"] .product-card,
+:root[data-theme="light"] .order-card,
+:root[data-theme="light"] .cart-item {
+  background: #ffffff !important;
+}
+
+/* Light theme - improve text contrast everywhere */
+:root[data-theme="light"] p,
+:root[data-theme="light"] span,
+:root[data-theme="light"] div,
+:root[data-theme="light"] label {
+  color: inherit;
+}
+
+/* Light theme - admin layout background */
+:root[data-theme="light"] .admin-layout,
+:root[data-theme="light"] .seller-layout {
+  background: #f5f5f5 !important;
+}
+
+/* Light theme - admin container background */
+:root[data-theme="light"] .admin-container {
+  background: transparent !important;
+}
+
+/* Light theme - ensure all text in cards is dark */
+:root[data-theme="light"] .stat-card p,
+:root[data-theme="light"] .stat-card span,
+:root[data-theme="light"] .stat-card div,
+:root[data-theme="light"] .content-card p,
+:root[data-theme="light"] .content-card span,
+:root[data-theme="light"] .content-card div {
+  color: #1a1a1a;
+}
+
+/* Light theme - data table text */
+:root[data-theme="light"] .data-table th,
+:root[data-theme="light"] .data-table td {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - badges remain colorful with good contrast */
+
+/* Light theme - activity items */
+:root[data-theme="light"] .activity-title {
+  color: #1a1a1a !important;
+}
+
+:root[data-theme="light"] .activity-description {
+  color: #666666 !important;
+}
+
+:root[data-theme="light"] .activity-time {
+  color: #999999 !important;
+}
+
+/* Light theme - sidebar text for better visibility */
+:root[data-theme="light"] .logo-text {
+  color: #1a1a1a !important;
+}
+
+:root[data-theme="light"] .logo-subtitle {
+  color: #666666 !important;
+}
+
+/* Light theme - make all dashboard headings dark */
+:root[data-theme="light"] .admin-layout h1,
+:root[data-theme="light"] .admin-layout h2,
+:root[data-theme="light"] .admin-layout h3,
+:root[data-theme="light"] .admin-layout h4,
+:root[data-theme="light"] .seller-layout h1,
+:root[data-theme="light"] .seller-layout h2,
+:root[data-theme="light"] .seller-layout h3,
+:root[data-theme="light"] .seller-layout h4 {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - page header should have light background */
+:root[data-theme="light"] .page-header {
+  background: transparent !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme - ensure page title is dark */
+:root[data-theme="light"] .page-title {
+  color: #1a1a1a !important;
+}
+
+/* Light theme - chart backgrounds */
+:root[data-theme="light"] .card-body > div[style*="background"] {
+  background: #f5f5f5 !important;
+}
+
+/* Light theme - inline styles override for chart summaries */
+:root[data-theme="light"] .card-body div[style*="#1f2937"] {
+  background: #f5f5f5 !important;
+}
+
+:root[data-theme="light"] .card-body div[style*="#9ca3af"] {
+  color: #666666 !important;
+}
+
+:root[data-theme="light"] .card-body div[style*="#e5e7eb"] {
+  color: #1a1a1a !important;
+}

@@ -16,6 +16,9 @@ import OrderDetailsPage from '../pages/OrderDetailsPage';
 // Product Pages
 import AllProductsPage from '../pages/AllProductsPage.tsx';
 
+// Home Page
+import HomePage from '../pages/HomePage';
+
 // Admin Pages
 import AdminLayout from '../layout/AdminLayout';
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -31,57 +34,6 @@ import SellerDashboard from '../pages/seller/SellerDashboard';
 import SellerProductsManagement from '../pages/seller/SellerProductsManagement';
 import SellerOrdersManagement from '../pages/seller/SellerOrdersManagement';
 import SellerRatingsManagement from '../pages/seller/SellerRatingsManagement';
-
-// Placeholder Home Page
-import { useAuth } from '../hooks/useAuth.ts';
-
-const HomePage: React.FC = () => {
-  const { user, logout } = useAuth();
-
-  return (
-    <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'system-ui', minHeight: '100vh', background: 'var(--bg-black)', color: 'var(--text-white)' }}>
-      <h1 style={{ color: 'var(--neon-cyan)' }}>🎉 Chào mừng đến với UniMerch!</h1>
-      <p style={{ color: 'var(--text-gray)', marginTop: '16px' }}>
-        Xin chào, <strong>{user?.fullName}</strong>!
-      </p>
-      <p style={{ color: 'var(--text-gray)' }}>Email: {user?.email}</p>
-      <p style={{ color: 'var(--text-gray)' }}>Role: {user?.role}</p>
-      {user?.role === 'admin' && (
-        <a href="/admin" style={{ 
-          display: 'inline-block',
-          marginTop: '24px', 
-          padding: '12px 24px',
-          background: 'var(--neon-cyan)',
-          color: 'var(--bg-black)',
-          textDecoration: 'none',
-          borderRadius: '10px',
-          fontSize: '16px',
-          fontWeight: '700',
-          cursor: 'pointer',
-          marginRight: '12px'
-        }}>
-          🎛️ Admin Panel
-        </a>
-      )}
-      <button
-        onClick={logout}
-        style={{
-          marginTop: '24px',
-          padding: '12px 24px',
-          background: 'var(--bg-input)',
-          color: 'var(--text-white)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: '10px',
-          fontSize: '16px',
-          fontWeight: '600',
-          cursor: 'pointer'
-        }}
-      >
-        Đăng xuất
-      </button>
-    </div>
-  );
-};
 
 const AppRouter: React.FC = () => {
   return (

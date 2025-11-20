@@ -2,7 +2,8 @@
 .seller-layout {
   display: flex;
   min-height: 100vh;
-  background: #1a1a1a;
+  background: var(--bg-black);
+  transition: background-color 0.3s ease;
 }
 
 .seller-main {
@@ -13,8 +14,8 @@
 /* Seller Sidebar */
 .seller-sidebar {
   width: 280px;
-  background: #000000;
-  border-right: 1px solid #333333;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -22,27 +23,31 @@
   left: 0;
   top: 0;
   z-index: 1000;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-header {
   padding: 24px 20px;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: border-color 0.3s ease;
 }
 
 .logo-text {
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-white);
   margin: 0;
   letter-spacing: 1px;
+  transition: color 0.3s ease;
 }
 
 .logo-subtitle {
   font-size: 11px;
-  color: #666666;
+  color: var(--text-gray);
   display: block;
   margin-top: 4px;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .sidebar-nav {
