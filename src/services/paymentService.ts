@@ -1,5 +1,5 @@
 import api from './api';
-import type { CreateOrderRequest, PaymentMethod } from '../types/payment.types';
+import type { CreateOrderRequest, PaymentMethod, Payment } from '../types/payment.types';
 import type { Order } from '../types/order.types';
 import { cartService } from './cartService';
 
@@ -140,5 +140,27 @@ export const paymentService = {
         icon: '💳',
       },
     ];
+  },
+
+  /**
+   * Create payment record for an order
+   */
+  createPaymentRecord: async (
+    orderId: number,
+    paymentMethod: PaymentMethod,
+    transactionId?: string
+  ): Promise<Payment> => {
+    try {
+      const response = await api.post<ApiResponse<Payment>>('/api/payments', {
+        order_id: orderId,
+        payment_method: paymentMethod,
+        transaction_id: transactionId?.trim() || undefined,
+      });
+
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Không thể lưu thông tin thanh toán';
+      throw new Error(errorMessage);
+    }
   },
 };

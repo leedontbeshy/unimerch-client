@@ -31,4 +31,5 @@ export interface CheckoutFormData {
   shipping_address: string;
   notes?: string;
   payment_method: PaymentMethod;
+  transaction_id?: string;
 }
