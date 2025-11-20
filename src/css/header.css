@@ -4,11 +4,12 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(13, 13, 13, 0.95);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
   z-index: 1000;
   padding: 0;
+  transition: background-color 0.3s ease;
 }
 
 .header-container {
@@ -88,6 +89,28 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray);
+  background: var(--bg-input);
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--neon-cyan);
+  background: var(--bg-input-hover);
+  border-color: var(--border-cyan);
+  box-shadow: 0 0 20px rgba(0, 229, 204, 0.2);
 }
 
 .header-icon {

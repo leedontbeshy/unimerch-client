@@ -1,16 +1,18 @@
 /* Products Page Styles */
 .products-page {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 /* Hero Section */
 .products-hero {
-  background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  background: linear-gradient(180deg, var(--bg-card-light) 0%, var(--bg-primary) 100%);
   padding: 80px 20px 60px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  transition: background 0.3s ease;
 }
 
 .products-hero::before {
@@ -34,9 +36,10 @@
 .products-hero__title {
   font-size: 56px;
   font-weight: 800;
-  color: white;
+  color: var(--text-white);
   margin: 0 0 16px 0;
   line-height: 1.2;
+  transition: color 0.3s ease;
 }
 
 .products-hero__highlight {
@@ -46,9 +49,10 @@
 
 .products-hero__subtitle {
   font-size: 18px;
-  color: #9ca3af;
+  color: var(--text-gray);
   margin: 0 0 40px 0;
   letter-spacing: 2px;
+  transition: color 0.3s ease;
 }
 
 .products-hero__search {
@@ -90,10 +94,11 @@
 }
 
 .products-count {
-  color: #9ca3af;
+  color: var(--text-gray);
   font-size: 14px;
   margin-bottom: 20px;
   text-align: left;
+  transition: color 0.3s ease;
 }
 
 .products-error {

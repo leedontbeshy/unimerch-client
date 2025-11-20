@@ -7,6 +7,7 @@
   min-height: 100vh;
   background: var(--bg-black);
   padding-top: 64px; /* Space for fixed header */
+  transition: background-color 0.3s ease;
 }
 
 .admin-main {
@@ -28,13 +29,13 @@
   top: 64px;
   bottom: 0;
   width: 280px;
-  background: rgba(13, 13, 13, 0.95);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   z-index: 999;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .sidebar-header {
@@ -175,7 +176,7 @@
 }
 
 .stat-card {
-  background: rgba(26, 26, 26, 0.6);
+  background: var(--bg-card-light);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
@@ -233,10 +234,11 @@
 .stat-card-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-gray-light);
+  color: var(--text-gray);
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  transition: color 0.3s ease;
 }
 
 .stat-card-value {
@@ -256,7 +258,7 @@
 
 /* ========== Content Cards ========== */
 .content-card {
-  background: rgba(26, 26, 26, 0.6);
+  background: var(--bg-card-light);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
@@ -278,6 +280,7 @@
   color: var(--text-white);
   margin: 0;
   letter-spacing: -0.3px;
+  transition: color 0.3s ease;
 }
 
 .card-body {
@@ -303,14 +306,15 @@
   text-align: left;
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-gray-light);
+  color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 1px;
+  transition: color 0.3s ease;
 }
 
 .data-table tbody tr {
   border-bottom: 1px solid var(--border-subtle);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .data-table tbody tr:hover {
@@ -329,13 +333,15 @@
   padding: 16px 12px;
   font-size: 14px;
   color: var(--text-white);
+  transition: color 0.3s ease;
 }
 
 .data-table-loading,
 .data-table-empty {
   padding: 64px 32px;
   text-align: center;
-  color: var(--text-gray-light);
+  color: var(--text-gray);
+  transition: color 0.3s ease;
 }
 
 .data-table-loading {
@@ -467,6 +473,7 @@
   color: var(--text-gray);
   margin-bottom: 8px;
   letter-spacing: 0.3px;
+  transition: color 0.3s ease;
 }
 
 .filter-select {
@@ -477,7 +484,7 @@
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-family: inherit;
   cursor: pointer;
 }
@@ -515,7 +522,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -583,14 +590,15 @@
 }
 
 .modal-content {
-  background: rgba(26, 26, 26, 0.98);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-light);
   border-radius: 16px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--border-subtle);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-subtle);
   animation: slideUp 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 @keyframes slideUp {
@@ -633,6 +641,7 @@
   color: var(--text-white);
   margin: 0;
   letter-spacing: -0.3px;
+  transition: color 0.3s ease;
 }
 
 .modal-close {
@@ -759,7 +768,7 @@
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .activity-item:hover {
@@ -789,18 +798,21 @@
   font-weight: 600;
   color: var(--text-white);
   margin: 0 0 4px;
+  transition: color 0.3s ease;
 }
 
 .activity-description {
   font-size: 13px;
-  color: var(--text-gray-light);
+  color: var(--text-gray);
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .activity-time {
   font-size: 12px;
   color: var(--text-gray-dark);
   margin-top: 8px;
+  transition: color 0.3s ease;
 }
 
 /* ========== Responsive ========== */
