@@ -67,21 +67,9 @@ class ProductService {
    * Get all products with optional filters
    */
   async getProducts(filters?: ProductFilters): Promise<ProductsResponse> {
-    const params = new URLSearchParams();
-
-    if (filters?.page) params.append('page', filters.page.toString());
-    if (filters?.limit) params.append('limit', filters.limit.toString());
-    if (filters?.category_id) params.append('category_id', filters.category_id.toString());
-    if (filters?.status) params.append('status', filters.status);
-    if (filters?.search) params.append('search', filters.search);
-    if (filters?.min_price) params.append('min_price', filters.min_price.toString());
-    if (filters?.max_price) params.append('max_price', filters.max_price.toString());
-    if (filters?.seller_id) params.append('seller_id', filters.seller_id.toString());
-
-    const queryString = params.toString();
-    const url = `/api/products${queryString ? `?${queryString}` : ''}`;
-
-    const response = await api.get<ProductsResponse>(url);
+    const response = await api.get<ProductsResponse>('/api/products', {
+      params: filters,
+    });
     return response.data;
   }
 

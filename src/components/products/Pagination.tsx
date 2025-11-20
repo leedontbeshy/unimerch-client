@@ -66,6 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="pagination">
       <button
+        type="button"
         className="pagination__button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
@@ -77,6 +78,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <React.Fragment key={index}>
           {typeof page === 'number' ? (
             <button
+              type="button"
               className={`pagination__number ${
                 currentPage === page ? 'pagination__number--active' : ''
               }`}
@@ -91,6 +93,7 @@ const Pagination: React.FC<PaginationProps> = ({
       ))}
 
       <button
+        type="button"
         className="pagination__button"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

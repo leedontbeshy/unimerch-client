@@ -1,110 +1,113 @@
-import type { AxiosResponse } from 'axios';
 import api from './api';
-import type { CartItem as OrderItem, Order } from '../types/order.types';
-import { cartService } from './cartService';
+import type { CartItem as OrderItem, Order, OrderStatus } from '../types/order.types';
 
-const delay = (ms = 350) => new Promise((resolve) => setTimeout(resolve, ms));
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
-const withAdapter = <T>(data: T, ms = 350) => ({
-  adapter: async (config: any): Promise<AxiosResponse<T>> => {
-    await delay(ms);
-    return {
-      data,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config,
-      request: {}
-    };
-  }
-});
+interface OrdersListResponse<T> {
+  orders: T[];
+  pagination: {
+    current_page: number;
+    total_pages: number;
+    total_orders: number;
+    has_next: boolean;
+    has_prev: boolean;
+  };
+}
 
-const mockOrders: Order[] = [
-  {
-    id: 101,
-    orderNumber: 'UN24001',
-    orderDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
-    status: 'Processing',
-    items: [
-      { productId: 1, name: 'Áo thun UniMerch Classic', price: 199000, quantity: 1 },
-      { productId: 4, name: 'Túi vải Canvas Logo', price: 149000, quantity: 1 }
-    ],
-    totalAmount: 348000
-  },
-  {
-    id: 102,
-    orderNumber: 'UN24002',
-    orderDate: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
-    status: 'Delivered',
-    items: [{ productId: 3, name: 'Áo khoác Varsity Xanh Mint', price: 459000, quantity: 1 }],
-    totalAmount: 459000
-  }
-];
+interface OrderItemResponse {
+  id: number;
+  order_id: number;
+  product_id: number;
+  quantity: number;
+  price: number;
+  product?: {
+    id: number;
+    name: string;
+    price: number;
+    image_url: string;
+  };
+}
 
-let orders: Order[] = [...mockOrders];
-let lastOrderId = orders.reduce((max, order) => Math.max(max, order.id), 1000);
+interface OrderResponse {
+  id: number;
+  user_id: number;
+  total_amount: number;
+  shipping_address: string;
+  payment_method: string;
+  status: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+  items: OrderItemResponse[];
+}
 
-const mapCartItemsToOrderItems = (cartItems: { product: { id: number; name: string; price: number }; quantity: number }[]): OrderItem[] =>
-  cartItems.map((item) => ({
-    productId: item.product.id,
-    name: item.product.name,
-    price: item.product.price,
-    quantity: item.quantity
-  }));
-
-const calculateTotal = (items: OrderItem[]) =>
-  items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+const transformOrderResponse = (orderResponse: OrderResponse): Order => {
+  return {
+    id: orderResponse.id,
+    orderNumber: `UN${orderResponse.id.toString().padStart(5, '0')}`,
+    orderDate: orderResponse.created_at,
+    status: orderResponse.status as OrderStatus,
+    items: orderResponse.items.map((item) => ({
+      productId: item.product_id,
+      name: item.product?.name || '',
+      price: item.price,
+      quantity: item.quantity,
+    })),
+    totalAmount: orderResponse.total_amount,
+    shipping_address: orderResponse.shipping_address,
+    payment_method: orderResponse.payment_method,
+    notes: orderResponse.notes,
+  };
+};
 
 export const orderService = {
-  async getOrders(): Promise<Order[]> {
-    const response = await api.get<Order[]>('/mock/orders', withAdapter([...orders]));
-    return response.data;
+  /**
+   * Get user's orders
+   * GET /api/orders
+   */
+  async getOrders(page = 1, limit = 20): Promise<Order[]> {
+    try {
+      const response = await api.get<ApiResponse<OrdersListResponse<OrderResponse>>>(
+        '/api/orders',
+        { params: { page, limit } }
+      );
+      return response.data.data.orders.map(transformOrderResponse);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Không thể tải danh sách đơn hàng';
+      throw new Error(errorMessage);
+    }
   },
 
+  /**
+   * Get order by ID
+   * GET /api/orders/:id
+   */
   async getOrderById(id: number): Promise<Order> {
-    const order = orders.find((item) => item.id === id);
-    if (!order) {
-      throw new Error('Không tìm thấy đơn hàng');
+    try {
+      const response = await api.get<ApiResponse<OrderResponse>>(`/api/orders/${id}`);
+      return transformOrderResponse(response.data.data);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Không tìm thấy đơn hàng';
+      throw new Error(errorMessage);
     }
-    const response = await api.get<Order>(`/mock/orders/${id}`, withAdapter(order));
-    return response.data;
   },
 
+  /**
+   * Cancel order
+   * PUT /api/orders/:id/cancel
+   */
   async cancelOrder(id: number): Promise<Order> {
-    const order = orders.find((item) => item.id === id);
-    if (!order) {
-      throw new Error('Không tìm thấy đơn hàng');
+    try {
+      const response = await api.delete<ApiResponse<OrderResponse>>(`/api/orders/${id}`);
+      return transformOrderResponse(response.data.data);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Không thể hủy đơn hàng';
+      throw new Error(errorMessage);
     }
-    if (order.status !== 'Pending') {
-      throw new Error('Chỉ có thể hủy đơn hàng đang chờ xử lý');
-    }
-    order.status = 'Cancelled';
-    const response = await api.post<Order>(`/mock/orders/${id}/cancel`, {}, withAdapter(order));
-    return response.data;
   },
-
-  async createOrder(): Promise<Order> {
-    const cart = await cartService.getCart();
-
-    if (cart.items.length === 0) {
-      throw new Error('Giỏ hàng của bạn đang trống');
-    }
-
-    const orderItems = mapCartItemsToOrderItems(cart.items);
-    const newOrder: Order = {
-      id: ++lastOrderId,
-      orderNumber: `UN${lastOrderId}`,
-      items: orderItems,
-      totalAmount: calculateTotal(orderItems),
-      status: 'Pending',
-      orderDate: new Date().toISOString()
-    };
-
-    orders = [newOrder, ...orders];
-    await cartService.clearCart();
-
-    const response = await api.post<Order>('/mock/orders', newOrder, withAdapter(newOrder));
-    return response.data;
-  }
 };
 
