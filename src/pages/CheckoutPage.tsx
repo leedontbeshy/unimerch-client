@@ -30,6 +30,7 @@ const CheckoutPage: React.FC = () => {
     shipping_address: '',
     notes: '',
     payment_method: 'cod',
+    transaction_id: '',
   });
 
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodOption[]>([]);
@@ -62,6 +63,14 @@ const CheckoutPage: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handlePaymentMethodChange = (methodId: PaymentMethod) => {
+    setFormData((prev) => ({
+      ...prev,
+      payment_method: methodId,
+      transaction_id: methodId === 'cod' ? '' : prev.transaction_id,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -80,6 +89,11 @@ const CheckoutPage: React.FC = () => {
       return;
     }
 
+    if (formData.payment_method !== 'cod' && !formData.transaction_id?.trim()) {
+      setError('Vui lòng nhập mã giao dịch cho phương thức thanh toán đã chọn');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -90,6 +104,13 @@ const CheckoutPage: React.FC = () => {
         notes: formData.notes || undefined,
         from_cart: true,
       });
+
+      // Temporarily skip payment record API because production backend lacks this route
+      // await paymentService.createPaymentRecord(
+      //   order.id,
+      //   formData.payment_method,
+      //   formData.payment_method === 'cod' ? undefined : formData.transaction_id
+      // );
 
       // Navigate to orders page with success message
       navigate('/orders', { 
@@ -224,9 +245,7 @@ const CheckoutPage: React.FC = () => {
                       className={`payment-method ${
                         formData.payment_method === method.id ? 'selected' : ''
                       }`}
-                      onClick={() =>
-                        setFormData((prev) => ({ ...prev, payment_method: method.id }))
-                      }
+                      onClick={() => handlePaymentMethodChange(method.id)}
                     >
                       <input
                         type="radio"
@@ -234,7 +253,7 @@ const CheckoutPage: React.FC = () => {
                         name="payment_method"
                         value={method.id}
                         checked={formData.payment_method === method.id}
-                        onChange={handleInputChange}
+                        onChange={() => handlePaymentMethodChange(method.id)}
                       />
                       <label htmlFor={method.id}>
                         <div className="payment-method-icon">{method.icon}</div>
@@ -246,6 +265,23 @@ const CheckoutPage: React.FC = () => {
                     </div>
                   ))}
                 </div>
+
+                {formData.payment_method !== 'cod' && (
+                  <div className="form-group">
+                    <label htmlFor="transaction_id">
+                      Mã giao dịch <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="transaction_id"
+                      name="transaction_id"
+                      value={formData.transaction_id || ''}
+                      onChange={handleInputChange}
+                      placeholder="Nhập mã giao dịch hoặc tham chiếu thanh toán"
+                      required
+                    />
+                  </div>
+                )}
               </div>
 
               <button
