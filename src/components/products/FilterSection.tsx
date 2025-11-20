@@ -26,6 +26,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
       {/* Category Filters */}
       <div className="filter-section__categories">
         <button
+          type="button"
           className={`filter-tag ${selectedCategory === null ? 'filter-tag--active' : ''}`}
           onClick={() => handleCategoryClick(null)}
         >
@@ -34,6 +35,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         {categories.map((category) => (
           <button
             key={category.id}
+            type="button"
             className={`filter-tag ${selectedCategory === category.id ? 'filter-tag--active' : ''}`}
             onClick={() => handleCategoryClick(category.id)}
           >

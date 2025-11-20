@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import '../css/cart.css';
 
@@ -8,6 +9,7 @@ const currencyFormatter = new Intl.NumberFormat('vi-VN', {
 });
 
 const CartPage: React.FC = () => {
+  const navigate = useNavigate();
   const {
     cart,
     totalItems,
@@ -16,16 +18,11 @@ const CartPage: React.FC = () => {
     successMessage,
     increaseQuantity,
     decreaseQuantity,
-    removeItem,
-    checkout
+    removeItem
   } = useCart();
 
-  const handleCheckout = async () => {
-    try {
-      await checkout();
-    } catch {
-      // errors handled via hook state
-    }
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
 
   return (

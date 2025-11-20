@@ -8,6 +8,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import CartPage from '../pages/CartPage';
+import CheckoutPage from '../pages/CheckoutPage';
 import CategoryPage from '../pages/CategoryPage';
 import OrdersPage from '../pages/OrdersPage';
 import OrderDetailsPage from '../pages/OrderDetailsPage';
@@ -140,6 +141,14 @@ const AppRouter: React.FC = () => {
             element={
               <ProtectedRoute>
                 <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
               </ProtectedRoute>
             }
           />

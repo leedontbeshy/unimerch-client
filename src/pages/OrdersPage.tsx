@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import type { Order } from '../types/order.types';
 import { orderService } from '../services/orderService';
 import '../css/orders.css';
@@ -25,6 +25,7 @@ const OrdersPage: React.FC = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchOrders = async () => {
     setIsLoading(true);
@@ -41,7 +42,14 @@ const OrdersPage: React.FC = () => {
 
   useEffect(() => {
     void fetchOrders();
-  }, []);
+    
+    // Check for success message from navigation state
+    if (location.state?.successMessage) {
+      setSuccess(location.state.successMessage);
+      // Clear the state to prevent showing message on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handleCancel = async (orderId: number) => {
     setActionLoadingId(orderId);
@@ -100,7 +108,7 @@ const OrdersPage: React.FC = () => {
                   >
                     Xem chi tiết
                   </button>
-                  {order.status === 'Pending' && (
+                  {(order.status === 'Pending' || order.status === 'pending') && (
                     <button
                       className="outline-button danger-button"
                       onClick={() => handleCancel(order.id)}

@@ -5,7 +5,7 @@ export interface CartItem {
   quantity: number;
 }
 
-export type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+export type OrderStatus = 'pending' | 'processing' | 'confirmed' | 'shipping' | 'delivered' | 'cancelled';
 
 export interface Order {
   id: number;
@@ -14,6 +14,9 @@ export interface Order {
   totalAmount: number;
   status: OrderStatus;
   orderDate: string;
+  shipping_address?: string;
+  payment_method?: string;
+  notes?: string;
 }
 
 
