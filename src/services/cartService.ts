@@ -42,8 +42,15 @@ const transformCartResponse = (cartData: CartApiResponse): Cart => {
     product: {
       id: item.product_id,
       name: item.product_name,
+      description: '',
       price: item.product_discount_price ?? item.product_price,
+      discount_price: item.product_discount_price ?? undefined,
+      quantity: item.quantity,
       image: item.product_image || DEFAULT_IMAGE,
+      image_url: item.product_image || DEFAULT_IMAGE,
+      status: 'available' as const,
+      category_id: 0,
+      seller_id: 0,
     },
     quantity: item.quantity,
   }));

@@ -1,5 +1,5 @@
 import api from './api';
-import type { CartItem as OrderItem, Order, OrderStatus } from '../types/order.types';
+import type { Order, OrderStatus } from '../types/order.types';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -106,6 +106,20 @@ export const orderService = {
       return transformOrderResponse(response.data.data);
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Không thể hủy đơn hàng';
+      throw new Error(errorMessage);
+    }
+  },
+
+  /**
+   * Create new order from cart
+   * POST /api/orders
+   */
+  async createOrder(): Promise<Order> {
+    try {
+      const response = await api.post<ApiResponse<OrderResponse>>('/api/orders');
+      return transformOrderResponse(response.data.data);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Không thể tạo đơn hàng';
       throw new Error(errorMessage);
     }
   },

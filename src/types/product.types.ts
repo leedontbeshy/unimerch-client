@@ -1,15 +1,11 @@
 export interface Product {
   id: number;
   name: string;
-  price: number;
-  image: string;
-}
-
-
   description: string;
   price: number;
   discount_price?: number;
   quantity: number;
+  image: string;
   image_url: string;
   status: 'available' | 'out_of_stock' | 'discontinued';
   category_id: number;

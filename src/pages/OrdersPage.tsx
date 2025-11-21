@@ -108,7 +108,7 @@ const OrdersPage: React.FC = () => {
                   >
                     Xem chi tiết
                   </button>
-                  {(order.status === 'Pending' || order.status === 'pending') && (
+                  {order.status === 'pending' && (
                     <button
                       className="outline-button danger-button"
                       onClick={() => handleCancel(order.id)}

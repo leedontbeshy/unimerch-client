@@ -1,7 +1,7 @@
 import type { Category } from '../types/category.types';
 import type { Product } from '../types/product.types';
 import api from './api';
-import { productService } from './productService';
+import productService from './productService';
 
 const categories: Category[] = [
   {
@@ -66,8 +66,8 @@ export const categoryService = {
 
   async getProductsByCategorySlug(slug: string): Promise<Product[]> {
     const ids = categoryProductMap[slug] ?? [];
-    const products = await productService.getMockProducts();
-    return products.filter((product) => ids.includes(product.id));
+    const response = await productService.getProducts();
+    return response.data.products.filter((product: any) => ids.includes(product.id));
   }
 };
 
