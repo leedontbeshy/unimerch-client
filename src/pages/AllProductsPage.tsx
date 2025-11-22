@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Header from '../components/Header';
 import ProductGrid from '../components/products/ProductGrid.tsx';
 import SearchBar from '../components/products/SearchBar.tsx';
 import FilterSection from '../components/products/FilterSection.tsx';
@@ -169,9 +170,11 @@ const AllProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="products-page">
-      {/* Hero Section */}
-      <section className="products-hero">
+    <>
+      <Header />
+      <div className="products-page">
+        {/* Hero Section */}
+        <section className="products-hero">
         <div className="products-hero__content">
           <h1 className="products-hero__title">
             BỘ SƯU TẬP <span className="products-hero__highlight">UEH 2025</span>
@@ -227,7 +230,8 @@ const AllProductsPage: React.FC = () => {
           )}
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
