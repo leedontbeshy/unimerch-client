@@ -251,7 +251,22 @@ const RegisterPage: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="agreeToTerms"
+              name="agreeToTerms"
+              checked={formData.agreeToTerms}
+              onChange={handleChange}
+              className="checkbox-input"
+              disabled={isLoading}
+            />
+            <label htmlFor="agreeToTerms" className="checkbox-label">
+              Tôi đồng ý với <span className="terms-link">Điều khoản sử dụng</span> và <span className="terms-link">Chính sách bảo mật</span>
+            </label>
+          </div>
+
+          <button type="submit" className="btn btn-primary" disabled={isLoading || !formData.agreeToTerms}>
             {isLoading ? (
               <>
                 <span className="spinner"></span>
