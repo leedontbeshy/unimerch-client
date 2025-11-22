@@ -437,7 +437,7 @@
 .checkbox-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: -2px 0;
   cursor: pointer;
 }
@@ -445,6 +445,7 @@
 .checkbox-input {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
   accent-color: var(--neon-cyan);
   cursor: pointer;
 }
@@ -454,18 +455,23 @@
   color: var(--text-gray);
   cursor: pointer;
   user-select: none;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.checkbox-label a {
+.checkbox-label a,
+.checkbox-label .terms-link {
   color: var(--neon-cyan);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 229, 204, 0.3);
+  text-underline-offset: 3px;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
-.checkbox-label a:hover {
+.checkbox-label a:hover,
+.checkbox-label .terms-link:hover {
   text-shadow: 0 0 8px var(--neon-cyan-glow);
+  text-decoration-color: var(--neon-cyan);
 }
 
 /* Links & Dividers */

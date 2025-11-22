@@ -68,10 +68,6 @@ const RegisterPage: React.FC = () => {
       newErrors.fullName = 'Họ và tên không được để trống';
     }
 
-    if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'Bạn phải đồng ý với điều khoản sử dụng';
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -253,27 +249,6 @@ const RegisterPage: React.FC = () => {
               placeholder="123 Đường ABC, Quận 1, TP.HCM"
               disabled={isLoading}
             />
-          </div>
-
-          <div className="form-group">
-            <div className="checkbox-group">
-              <input
-                type="checkbox"
-                id="agreeToTerms"
-                name="agreeToTerms"
-                checked={formData.agreeToTerms}
-                onChange={handleChange}
-                className="checkbox-input"
-                disabled={isLoading}
-              />
-              <label htmlFor="agreeToTerms" className="checkbox-label">
-                Tôi đồng ý với{' '}
-                <a href="/terms" className="auth-link" target="_blank">
-                  Điều khoản sử dụng
-                </a>
-              </label>
-            </div>
-            {errors.agreeToTerms && <p className="form-error">{errors.agreeToTerms}</p>}
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={isLoading}>
