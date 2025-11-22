@@ -113,15 +113,15 @@ const HomePage: React.FC = () => {
           <div className="hero-visual">
             <div className="stats-grid">
               <div className="stat-card">
-                <div className="stat-number">10K+</div>
+                <div className="stat-number">5+</div>
                 <div className="stat-label">Sinh viên</div>
               </div>
               <div className="stat-card">
-                <div className="stat-number">5K+</div>
+                <div className="stat-number">10+</div>
                 <div className="stat-label">Sản phẩm</div>
               </div>
               <div className="stat-card">
-                <div className="stat-number">99%</div>
+                <div className="stat-number">36%</div>
                 <div className="stat-label">Hài lòng</div>
               </div>
             </div>
