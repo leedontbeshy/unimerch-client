@@ -12,10 +12,10 @@
 /* Light Theme */
 :root[data-theme="light"] {
   --bg-black: #ffffff;
-  --bg-card: #f5f5f5;
-  --bg-card-light: #e8e8e8;
-  --bg-input: #f0f0f0;
-  --bg-input-hover: #e5e5e5;
+  --bg-card: #f8f8f8;
+  --bg-card-light: #f0f0f0;
+  --bg-input: #ffffff;
+  --bg-input-hover: #f8f8f8;
   
   --text-white: #000000;
   --text-gray: #4A4A4A;
@@ -29,6 +29,9 @@
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
   --shadow-glow: 0 0 40px rgba(0, 229, 204, 0.2);
   --shadow-glow-intense: 0 0 60px rgba(0, 229, 204, 0.3), 0 0 100px rgba(0, 229, 204, 0.15);
+  
+  --auth-container-bg: rgba(255, 255, 255, 0.95);
+  --auth-container-border: rgba(0, 0, 0, 0.1);
 }
 
 /* Dark Theme */
@@ -51,6 +54,9 @@
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 40px var(--neon-cyan-glow);
   --shadow-glow-intense: 0 0 60px var(--neon-cyan-glow), 0 0 100px rgba(0, 229, 204, 0.3);
+  
+  --auth-container-bg: rgba(26, 26, 26, 0.6);
+  --auth-container-border: rgba(255, 255, 255, 0.05);
 }
 
 /* Auth Layout */
@@ -100,14 +106,14 @@
 .auth-container {
   width: 100%;
   max-width: 400px;
-  background: rgba(26, 26, 26, 0.6);
+  background: var(--auth-container-bg);
   backdrop-filter: blur(20px);
   border-radius: 16px;
   box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-subtle);
   overflow: hidden;
   position: relative;
   z-index: 1;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--auth-container-border);
 }
 
 .auth-container::before {
