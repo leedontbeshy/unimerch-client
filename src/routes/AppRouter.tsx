@@ -79,15 +79,10 @@ const AppRouter: React.FC = () => {
             <Route path="storefront" element={<Navigate to="/" replace />} />
           </Route>
 
+          {/* Home Route - Public */}
+          <Route path="/" element={<HomePage />} />
+
           {/* Protected Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/cart"
             element={
