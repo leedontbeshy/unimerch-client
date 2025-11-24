@@ -32,20 +32,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       {hasDiscount && (
         <div className="product-card__badge">-{discountPercentage}%</div>
       )}
-      
-      <div className="product-card__image">
-        <img 
-          src={product.image_url} 
-          alt={product.name}
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = '/placeholder-product.png';
-          }}
-        />
-      </div>
+
+      <a href={`/products/${product.id}`} className="product-card__image-link">
+        <div className="product-card__image">
+          <img
+            src={product.image_url}
+            alt={product.name}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/placeholder-product.png';
+            }}
+          />
+        </div>
+      </a>
 
       <div className="product-card__content">
-        <h3 className="product-card__title">{product.name}</h3>
-        
+        <a href={`/products/${product.id}`} className="product-card__title-link">
+          <h3 className="product-card__title">{product.name}</h3>
+        </a>
+
         <div className="product-card__price">
           <span className="product-card__price--current">
             {formatPrice(hasDiscount ? product.discount_price! : product.price)}

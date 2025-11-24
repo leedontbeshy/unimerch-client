@@ -15,6 +15,7 @@ import OrderDetailsPage from '../pages/OrderDetailsPage';
 
 // Product Pages
 import AllProductsPage from '../pages/AllProductsPage.tsx';
+import ProductDetailPage from '../pages/ProductDetailPage';
 
 // Home Page
 import HomePage from '../pages/HomePage';
@@ -45,6 +46,7 @@ const AppRouter: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/all-products" element={<AllProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
 
           {/* Admin Routes */}
           <Route
