@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import type { Order } from '../types/order.types';
 import { orderService } from '../services/orderService';
+import Header from '../components/Header';
 import '../css/orders.css';
 
 const currencyFormatter = new Intl.NumberFormat('vi-VN', {
@@ -65,9 +66,11 @@ const OrdersPage: React.FC = () => {
   };
 
   return (
-    <section className="orders-page">
-      <div className="orders-container">
-        <div className="orders-header">
+    <>
+      <Header />
+      <section className="orders-page">
+        <div className="orders-container">
+          <div className="orders-header">
           <p style={{ color: '#48d9a4', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
             Đơn hàng của tôi
           </p>
@@ -122,8 +125,9 @@ const OrdersPage: React.FC = () => {
             ))}
           </div>
         )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 

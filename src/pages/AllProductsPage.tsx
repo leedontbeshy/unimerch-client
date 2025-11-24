@@ -160,6 +160,8 @@ const AllProductsPage: React.FC = () => {
     try {
       await cartService.addToCart(product.id, 1);
       showToast(`Đã thêm "${product.name}" vào giỏ hàng!`, 'success');
+      // Trigger cart update event
+      window.dispatchEvent(new Event('cartUpdated'));
     } catch (err: any) {
       const errorMessage = err?.message || 'Không thể thêm vào giỏ hàng';
       showToast(`Lỗi: ${errorMessage}`, 'error');

@@ -61,13 +61,19 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await login({
+      const user = await login({
         email: formData.email,
         password: formData.password,
       });
       
-      // Redirect to all products page after successful login
-      navigate('/all-products');
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else if (user.role === 'seller') {
+        navigate('/seller', { replace: true });
+      } else {
+        navigate('/all-products', { replace: true });
+      }
     } catch (error: unknown) {
       const message = (error as { response?: { data?: { message?: string } } }).response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
       setApiError(message);

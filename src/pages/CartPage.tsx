@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import Header from '../components/Header';
 import '../css/cart.css';
 
 const currencyFormatter = new Intl.NumberFormat('vi-VN', {
@@ -26,8 +27,10 @@ const CartPage: React.FC = () => {
   };
 
   return (
-    <section className="cart-page">
-      <div className="cart-container">
+    <>
+      <Header hideCart={true} />
+      <section className="cart-page">
+        <div className="cart-container">
         <div className="cart-header">
           <p style={{ color: '#48d9a4', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
             Giỏ hàng
@@ -114,8 +117,9 @@ const CartPage: React.FC = () => {
             </footer>
           </>
         )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 
