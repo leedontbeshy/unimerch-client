@@ -122,32 +122,31 @@ const AllProductsPage: React.FC = () => {
       setError(null);
 
       try {
+        // Prepare filters for both endpoints
         const filters: ProductFilters = {
           page: currentPage,
           limit: ITEMS_PER_PAGE,
           status: 'available',
         };
-
         if (selectedCategory) {
           filters.category_id = selectedCategory;
         }
-
-        if (searchQuery) {
-          filters.search = searchQuery;
-        }
-
-        // Apply sorting
         if (sortBy !== 'newest') {
           filters.sort_by = sortBy as any;
         }
 
-        const response = await productService.getProducts(filters);
-        const sortedProducts = sortProductsList(response.data.products, sortBy);
+        let response;
+        if (searchQuery && searchQuery.trim() !== '') {
+          // Use new search API for accent-insensitive search
+          response = await productService.searchProducts(searchQuery, filters);
+        } else {
+          response = await productService.getProducts(filters);
+        }
 
+        const sortedProducts = sortProductsList(response.data.products, sortBy);
         setProducts(sortedProducts);
         setTotalPages(response.data.pagination.totalPages);
         setTotalProducts(response.data.pagination.total);
-        
       } catch (err: any) {
         console.error('Failed to load products:', err);
         setError(err?.response?.data?.message || 'Không thể tải sản phẩm');
