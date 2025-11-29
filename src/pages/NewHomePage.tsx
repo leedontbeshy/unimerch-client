@@ -182,7 +182,8 @@ const NewHomePage: React.FC = () => {
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: '0.05em',
                   lineHeight: '1',
-                  margin: '0'
+                  margin: '0',
+                  marginLeft: '-0.45em'
                 }}>MERCH</h1>
                 <h1 className="hero-title accent-color" style={{
                   fontSize: 'clamp(4rem, 10vw, 8rem)',
@@ -499,7 +500,7 @@ const NewHomePage: React.FC = () => {
             fontWeight: '700',
             marginBottom: '24px',
             fontFamily: "'Montserrat', sans-serif"
-          }}>SẸN SÀNG THAM GIA?</h2>
+          }}>SẴN SÀNG THAM GIA?</h2>
           <p className="home-text-secondary" style={{
             fontSize: '1.2rem',
             marginBottom: '40px'
