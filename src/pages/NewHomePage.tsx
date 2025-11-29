@@ -231,10 +231,10 @@ const NewHomePage: React.FC = () => {
                 gap: '20px',
                 color: '#f1f3f5'
               }}>
-                <div style={{ writingMode: 'vertical-rl', fontSize: '2rem', fontWeight: '700', letterSpacing: '0.2em' }}>2025</div>
-                <div style={{ writingMode: 'vertical-rl', fontSize: '1.5rem', opacity: '0.6', letterSpacing: '0.2em' }}>GIỚI HẠN</div>
-                <div style={{ writingMode: 'vertical-rl', fontSize: '2rem', fontWeight: '700', letterSpacing: '0.2em' }}>CAMPUS</div>
-                <div style={{ writingMode: 'vertical-rl', fontSize: '1.5rem', fontWeight: '700', letterSpacing: '0.2em' }}>BỘ SƯU TẬP</div>
+                <div style={{ writingMode: 'vertical-rl', fontSize: '2rem', fontWeight: '900', letterSpacing: '0.2em' }} className="hero-vertical-text">2025</div>
+                <div style={{ writingMode: 'vertical-rl', fontSize: '1.5rem', fontWeight: '900', letterSpacing: '0.2em' }} className="hero-vertical-text">GIỚI HẠN</div>
+                <div style={{ writingMode: 'vertical-rl', fontSize: '2rem', fontWeight: '900', letterSpacing: '0.2em' }} className="hero-vertical-text">CAMPUS</div>
+                <div style={{ writingMode: 'vertical-rl', fontSize: '1.5rem', fontWeight: '900', letterSpacing: '0.2em' }} className="hero-vertical-text">BỘ SƯU TẬP</div>
                 <div style={{ writingMode: 'vertical-rl', fontSize: '1.5rem', color: '#18b0b4', fontWeight: '700', letterSpacing: '0.2em', marginTop: '20px' }}>RA MẮT — 2025</div>
               </div>
             </div>
