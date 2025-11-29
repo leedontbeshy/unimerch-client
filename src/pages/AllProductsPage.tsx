@@ -51,17 +51,12 @@ const AllProductsPage: React.FC = () => {
     
     if (categoryParam && categories.length > 0) {
       console.log('Looking for category:', categoryParam);
-      console.log('Available categories:', categories.map((c: Category) => ({ id: c.id, name: c.name, slug: c.slug })));
+      console.log('Available categories:', categories.map((c: Category) => ({ id: c.id, name: c.name })));
       
       // Find category by matching with various formats
       const category = categories.find((cat: Category) => {
         // Direct name match (case-insensitive)
         if (cat.name.toLowerCase() === categoryParam.toLowerCase()) {
-          return true;
-        }
-        
-        // Slug match
-        if (cat.slug?.toLowerCase() === categoryParam.toLowerCase()) {
           return true;
         }
         
