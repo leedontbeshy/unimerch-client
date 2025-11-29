@@ -3,16 +3,41 @@
 :root {
   --accent: #18b0b4;
   --ueh-blue: rgb(78, 160, 255);
-  --bg-dark: #0d0f12;
-  --text-light: #f1f3f5;
-  --text-muted: #d1d5db;
-  --card-dark: #16181d;
+}
+
+/* Dark theme (default for home page) */
+:root[data-theme="dark"],
+:root {
+  --home-bg-primary: #0d0f12;
+  --home-bg-secondary: #16181d;
+  --home-bg-tertiary: #1a1d23;
+  --home-text-primary: #f1f3f5;
+  --home-text-secondary: #d1d5db;
+  --home-text-muted: #9ca3af;
+  --home-border: rgba(255, 255, 255, 0.1);
+  --home-pill-bg: #0d0f12;
+  --home-pill-border: rgba(24, 176, 180, 0.3);
+  --home-card-bg: #16181d;
+  --home-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* Light theme for home page */
+:root[data-theme="light"] {
+  --home-bg-primary: #ffffff;
+  --home-bg-secondary: #f9fafb;
+  --home-bg-tertiary: #f3f4f6;
+  --home-text-primary: #1a1a1a;
+  --home-text-secondary: #4b5563;
+  --home-text-muted: #6b7280;
+  --home-border: rgba(0, 0, 0, 0.1);
+  --home-pill-bg: #ffffff;
+  --home-pill-border: rgba(24, 176, 180, 0.3);
+  --home-card-bg: #ffffff;
+  --home-shadow: rgba(0, 0, 0, 0.1);
 }
 
 body {
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-light);
 }
 
 @keyframes scroll {
@@ -25,9 +50,114 @@ body {
 }
 
 .home-page {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
+  background-color: var(--home-bg-primary);
+  color: var(--home-text-primary);
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: var(--home-bg-primary) !important;
+  transition: background-color 0.3s ease;
+}
+
+/* Value Pills */
+.value-pills-section {
+  background-color: var(--home-bg-secondary) !important;
+  transition: background-color 0.3s ease;
+}
+
+.value-pill {
+  background-color: var(--home-pill-bg) !important;
+  border-color: var(--home-pill-border) !important;
+  color: var(--home-text-primary) !important;
+  transition: all 0.3s ease;
+}
+
+/* Product Cards */
+.product-card-home {
+  background-color: var(--home-card-bg) !important;
+  transition: all 0.3s ease;
+}
+
+.product-card-home-image-bg {
+  background-color: var(--home-bg-tertiary) !important;
+}
+
+:root[data-theme="light"] .product-card-home-image-bg {
+  background-color: #f3f4f6 !important;
+}
+
+/* Collection Content Box */
+.collection-content-box {
+  background-color: var(--home-bg-secondary) !important;
+  transition: all 0.3s ease;
+}
+
+:root[data-theme="light"] .collection-content-box {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 16px var(--home-shadow);
+}
+
+:root[data-theme="dark"] .collection-content-box {
+  background-color: rgba(13, 15, 18, 0.7) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Text Colors */
+.home-text-primary {
+  color: var(--home-text-primary) !important;
+}
+
+.home-text-secondary {
+  color: var(--home-text-secondary) !important;
+}
+
+.home-text-muted {
+  color: var(--home-text-muted) !important;
+}
+
+/* Accent Color stays consistent */
+.accent-color {
+  color: var(--accent) !important;
+}
+
+/* Text shadows - adjust for light mode */
+.hero-title {
+  color: var(--home-text-primary) !important;
+  transition: color 0.3s ease;
+}
+
+:root[data-theme="light"] .hero-title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+:root[data-theme="dark"] .hero-title {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Vertical text on hero */
+.hero-vertical-text {
+  color: var(--home-text-primary) !important;
+  transition: color 0.3s ease;
+}
+
+:root[data-theme="light"] .hero-vertical-text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+:root[data-theme="dark"] .hero-vertical-text {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Typography watermark */
+.typography-watermark {
+  color: rgba(24, 176, 180, 0.05) !important;
+}
+
+:root[data-theme="light"] .typography-watermark {
+  color: rgba(24, 176, 180, 0.08) !important;
 }
 
 /* Override default link styles */

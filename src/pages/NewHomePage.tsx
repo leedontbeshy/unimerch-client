@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import productService from '../services/productService';
 import '../css/new-home.css';
 
 // Arrow Right Icon Component
@@ -12,36 +13,60 @@ const ArrowRight = ({ size = 24 }: { size?: number }) => (
 );
 
 const NewHomePage: React.FC = () => {
-  const [featuredProducts] = useState([
-    {
-      id: 1,
-      name: 'Áo Thun UEH 2025',
-      price: 250000,
-      image: 'https://shop.ueh.edu.vn/wp-content/uploads/2022/05/800x600-30.png',
-      category: 'Áo Thun'
-    },
-    {
-      id: 2,
-      name: 'Logo UEH Vàng',
-      price: 150000,
-      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png',
-      category: 'Phụ Kiện'
-    },
-    {
-      id: 3,
-      name: 'Ly Giữ Nhiệt UEH',
-      price: 180000,
-      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-17.png',
-      category: 'Ly'
-    },
-    {
-      id: 4,
-      name: 'Sổ Tay UEH',
-      price: 80000,
-      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-23.png',
-      category: 'Đồ Học Tập'
-    }
-  ]);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+
+  // Load featured products from API
+  useEffect(() => {
+    const loadFeaturedProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        const response = await productService.getProducts({ 
+          limit: 4, 
+          status: 'available',
+          sort_by: 'newest'
+        });
+        setFeaturedProducts(response.data.products || []);
+      } catch (error) {
+        console.error('Failed to load featured products:', error);
+        // Fallback to placeholder products if API fails
+        setFeaturedProducts([
+          {
+            id: 1,
+            name: 'Áo Thun UEH 2025',
+            price: 250000,
+            image: 'https://shop.ueh.edu.vn/wp-content/uploads/2022/05/800x600-30.png',
+            category: { name: 'Áo Thun' }
+          },
+          {
+            id: 2,
+            name: 'Logo UEH Vàng',
+            price: 150000,
+            image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png',
+            category: { name: 'Phụ Kiện' }
+          },
+          {
+            id: 3,
+            name: 'Ly Giữ Nhiệt UEH',
+            price: 180000,
+            image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-17.png',
+            category: { name: 'Ly' }
+          },
+          {
+            id: 4,
+            name: 'Sổ Tay UEH',
+            price: 80000,
+            image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-23.png',
+            category: { name: 'Đồ Học Tập' }
+          }
+        ]);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    loadFeaturedProducts();
+  }, []);
 
   const collections = [
     {
@@ -98,19 +123,24 @@ const NewHomePage: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleProductClick = (productId: number) => {
+    navigate(`/products/${productId}`);
+  };
+
   return (
     <>
       <Header />
       <div className="home-page">
         {/* Hero Section */}
-        <section style={{
+        <section className="hero-section" style={{
           position: 'relative',
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
-          paddingTop: '80px',
-          backgroundColor: '#0d0f12'
+          paddingTop: '80px'
         }}>
           <div style={{
             maxWidth: '1200px',
@@ -138,43 +168,35 @@ const NewHomePage: React.FC = () => {
 
               {/* Main Text */}
               <div style={{ textAlign: 'center' }}>
-                <h1 style={{
+                <h1 className="hero-title" style={{
                   fontSize: 'clamp(4rem, 10vw, 8rem)',
                   fontWeight: '900',
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: '0.05em',
                   lineHeight: '1',
-                  margin: '0',
-                  color: '#f1f3f5',
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6)'
+                  margin: '0'
                 }}>UNI</h1>
-                <h1 style={{
+                <h1 className="hero-title" style={{
                   fontSize: 'clamp(4rem, 10vw, 8rem)',
                   fontWeight: '900',
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: '0.05em',
                   lineHeight: '1',
-                  margin: '0',
-                  color: '#f1f3f5',
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6)'
+                  margin: '0'
                 }}>MERCH</h1>
-                <h1 style={{
+                <h1 className="hero-title accent-color" style={{
                   fontSize: 'clamp(4rem, 10vw, 8rem)',
                   fontWeight: '900',
                   fontFamily: "'Montserrat', sans-serif",
                   letterSpacing: '0.05em',
                   lineHeight: '1',
-                  color: '#18b0b4',
-                  marginBottom: '20px',
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.6)'
+                  marginBottom: '20px'
                 }}>CHO UEH</h1>
-                <p style={{
+                <p className="hero-title" style={{
                   fontSize: '1.5rem',
                   fontWeight: '300',
                   letterSpacing: '0.1em',
-                  marginBottom: '40px',
-                  color: '#f1f3f5',
-                  textShadow: '0 1px 4px rgba(0, 0, 0, 0.7)'
+                  marginBottom: '40px'
                 }}>Mặc Đẹp. Học Giỏi.</p>
                 
                 <Link 
@@ -219,16 +241,14 @@ const NewHomePage: React.FC = () => {
         </section>
 
         {/* Value Pills */}
-        <section style={{ padding: '40px 20px', textAlign: 'center', backgroundColor: '#16181d' }}>
+        <section className="value-pills-section" style={{ padding: '40px 20px', textAlign: 'center' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             {['Giá sinh viên', 'Cotton cao cấp', 'Giao nhanh 2-3 ngày', 'Đổi trả trong 14 ngày'].map((pill, index) => (
-              <span key={index} style={{
+              <span key={index} className="value-pill" style={{
                 padding: '12px 24px',
-                backgroundColor: '#0d0f12',
                 borderRadius: '50px',
                 fontSize: '0.95rem',
-                border: '1px solid rgba(24, 176, 180, 0.3)',
-                color: '#f1f3f5'
+                border: '1px solid'
               }}>
                 {pill}
               </span>
@@ -240,71 +260,89 @@ const NewHomePage: React.FC = () => {
         <section style={{ padding: '80px 20px' }}>
           <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-              <h2 style={{
+              <h2 className="home-text-primary" style={{
                 fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                 fontWeight: '700',
                 fontFamily: "'Montserrat', sans-serif",
                 letterSpacing: '0.1em',
                 marginBottom: '16px'
               }}>SẢN PHẨM BÁN CHẠY</h2>
-              <p style={{ fontSize: '1.2rem', color: '#f1f3f5' }}>Những sản phẩm được yêu thích nhất</p>
+              <p className="home-text-primary" style={{ fontSize: '1.2rem' }}>Những sản phẩm được yêu thích nhất</p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '30px'
-            }}>
-              {featuredProducts.map((product) => (
-                <div key={product.id} style={{
-                  backgroundColor: '#16181d',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  transition: 'transform 0.3s ease',
-                  cursor: 'pointer'
-                }}>
-                  <div style={{
+            {isLoadingProducts ? (
+              <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+                <p className="home-text-secondary" style={{ fontSize: '1.1rem' }}>Đang tải sản phẩm...</p>
+              </div>
+            ) : (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '30px'
+              }}>
+                {featuredProducts.map((product) => (
+                <div 
+                  key={product.id} 
+                  className="product-card-home" 
+                  onClick={() => handleProductClick(product.id)}
+                  style={{
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    transition: 'transform 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div className="product-card-home-image-bg" style={{
                     width: '100%',
                     aspectRatio: '1',
-                    backgroundColor: '#ffffff',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     overflow: 'hidden'
                   }}>
                     <img 
-                      src={product.image} 
+                      src={product.image_url || product.image} 
                       alt={product.name}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        // Fallback to placeholder if image fails to load
+                        e.currentTarget.src = 'https://via.placeholder.com/400x400?text=No+Image';
+                      }}
                     />
                   </div>
                   <div style={{ padding: '20px' }}>
-                    <p style={{ fontSize: '0.85rem', color: '#18b0b4', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {product.category}
+                    <p className="accent-color" style={{ fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {typeof product.category === 'string' ? product.category : product.category?.name || 'Sản phẩm'}
                     </p>
-                    <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '12px', color: '#f1f3f5' }}>
+                    <h3 className="home-text-primary" style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '12px' }}>
                       {product.name}
                     </h3>
-                    <p style={{ fontSize: '1.3rem', fontWeight: '700', color: '#18b0b4' }}>
-                      {product.price.toLocaleString('vi-VN')}₫
+                    <p className="accent-color" style={{ fontSize: '1.3rem', fontWeight: '700' }}>
+                      {(product.discount_price || product.price).toLocaleString('vi-VN')}₫
                     </p>
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         </section>
 
         {/* Typography Section */}
         <section style={{ position: 'relative', padding: '100px 20px', overflow: 'hidden' }}>
-          <div style={{
+          <div className="typography-watermark" style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             fontSize: 'clamp(4rem, 15vw, 12rem)',
             fontWeight: '900',
-            color: 'rgba(24, 176, 180, 0.05)',
             whiteSpace: 'nowrap',
             pointerEvents: 'none',
             fontFamily: "'Montserrat', sans-serif"
@@ -312,14 +350,14 @@ const NewHomePage: React.FC = () => {
             UNIMERCH · UNIMERCH
           </div>
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-            <h2 style={{
+            <h2 className="home-text-primary" style={{
               fontSize: 'clamp(2.5rem, 5vw, 4rem)',
               fontWeight: '700',
               fontFamily: "'Montserrat', sans-serif",
               letterSpacing: '0.15em',
               marginBottom: '20px'
             }}>VĂN HÓA SINH VIÊN</h2>
-            <p style={{ fontSize: '1.2rem', color: '#f1f3f5' }}>Thiết kế dành cho những sinh viên khác biệt</p>
+            <p className="home-text-primary" style={{ fontSize: '1.2rem' }}>Thiết kế dành cho những sinh viên khác biệt</p>
           </div>
         </section>
 
@@ -362,23 +400,22 @@ const NewHomePage: React.FC = () => {
               </div>
 
               {/* Content Side */}
-              <div style={{
+              <div className="collection-content-box" style={{
                 order: collection.position === 'right' ? 1 : 2,
-                padding: '40px'
+                padding: '40px',
+                borderRadius: '16px'
               }}>
-                <h2 style={{
+                <h2 className="home-text-primary" style={{
                   fontSize: 'clamp(2rem, 4vw, 3.5rem)',
                   fontWeight: '700',
                   marginBottom: '24px',
                   fontFamily: "'Montserrat', sans-serif",
-                  letterSpacing: '0.05em',
-                  color: '#f1f3f5'
+                  letterSpacing: '0.05em'
                 }}>{collection.title}</h2>
-                <p style={{
+                <p className="home-text-secondary" style={{
                   fontSize: '1.2rem',
                   lineHeight: '1.8',
-                  marginBottom: '40px',
-                  color: '#d1d5db'
+                  marginBottom: '40px'
                 }}>{collection.description}</p>
                 <Link
                   to={`/all-products?category=${collection.category}`}
@@ -418,14 +455,14 @@ const NewHomePage: React.FC = () => {
         {/* Lookbook */}
         <section style={{ padding: '80px 20px', overflow: 'hidden' }}>
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <h2 style={{
+            <h2 className="home-text-primary" style={{
               fontSize: 'clamp(2.5rem, 5vw, 4rem)',
               fontWeight: '700',
               fontFamily: "'Montserrat', sans-serif",
               letterSpacing: '0.1em',
               marginBottom: '16px'
             }}>BỘ SƯU TẬP CAMPUS</h2>
-            <p style={{ fontSize: '1.2rem', color: '#f1f3f5' }}>Sinh viên thật, phong cách thật</p>
+            <p className="home-text-primary" style={{ fontSize: '1.2rem' }}>Sinh viên thật, phong cách thật</p>
           </div>
 
           <div style={{
@@ -453,21 +490,19 @@ const NewHomePage: React.FC = () => {
         </section>
 
         {/* Footer CTA */}
-        <section style={{
+        <section className="value-pills-section" style={{
           padding: '100px 20px',
-          textAlign: 'center',
-          backgroundColor: '#16181d'
+          textAlign: 'center'
         }}>
-          <h2 style={{
+          <h2 className="home-text-primary" style={{
             fontSize: 'clamp(2rem, 4vw, 3.5rem)',
             fontWeight: '700',
             marginBottom: '24px',
             fontFamily: "'Montserrat', sans-serif"
-          }}>SẴN SÀNG THAM GIA?</h2>
-          <p style={{
+          }}>SẸN SÀNG THAM GIA?</h2>
+          <p className="home-text-secondary" style={{
             fontSize: '1.2rem',
-            marginBottom: '40px',
-            color: '#d1d5db'
+            marginBottom: '40px'
           }}>Khám phá toàn bộ bộ sưu tập UniMerch 2025</p>
           <Link 
             to="/all-products"
