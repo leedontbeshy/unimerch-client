@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import ProductGrid from '../components/products/ProductGrid.tsx';
 import SearchBar from '../components/products/SearchBar.tsx';
@@ -11,6 +12,7 @@ import { useToast } from '../context/ToastContext';
 import '../css/products-page.css';
 
 const AllProductsPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +44,48 @@ const AllProductsPage: React.FC = () => {
     };
     loadCategories();
   }, []);
+
+  // Watch for URL parameter changes and update selected category
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    
+    if (categoryParam && categories.length > 0) {
+      console.log('Looking for category:', categoryParam);
+      console.log('Available categories:', categories.map((c: Category) => ({ id: c.id, name: c.name, slug: c.slug })));
+      
+      // Find category by matching with various formats
+      const category = categories.find((cat: Category) => {
+        // Direct name match (case-insensitive)
+        if (cat.name.toLowerCase() === categoryParam.toLowerCase()) {
+          return true;
+        }
+        
+        // Slug match
+        if (cat.slug?.toLowerCase() === categoryParam.toLowerCase()) {
+          return true;
+        }
+        
+        // URL-encoded name match
+        const encodedCatName = encodeURIComponent(cat.name.toLowerCase());
+        if (encodedCatName === categoryParam.toLowerCase()) {
+          return true;
+        }
+        
+        return false;
+      });
+      
+      if (category) {
+        console.log('Found category:', category.name, 'with ID:', category.id);
+        setSelectedCategory(category.id);
+      } else {
+        console.log('No matching category found');
+        setSelectedCategory(null);
+      }
+    } else if (!categoryParam) {
+      // No category parameter, show all products
+      setSelectedCategory(null);
+    }
+  }, [searchParams, categories]);
 
   const getEffectivePrice = useCallback((product: Product) => {
     return product.discount_price ?? product.price;

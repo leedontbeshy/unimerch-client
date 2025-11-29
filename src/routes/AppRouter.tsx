@@ -18,7 +18,7 @@ import AllProductsPage from '../pages/AllProductsPage.tsx';
 import ProductDetailPage from '../pages/ProductDetailPage';
 
 // Home Page
-import HomePage from '../pages/HomePage';
+import NewHomePage from '../pages/NewHomePage';
 
 // Admin Pages
 import AdminLayout from '../layout/AdminLayout';
@@ -82,7 +82,7 @@ const AppRouter: React.FC = () => {
           </Route>
 
           {/* Home Route - Public */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<NewHomePage />} />
 
           {/* Protected Routes */}
           <Route

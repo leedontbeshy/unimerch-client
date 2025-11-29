@@ -1,128 +1,240 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import Header from '../components/Header';
-import '../css/home.css';
 
 const HomePage: React.FC = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleGetStarted = () => {
-    if (user) {
-      navigate('/all-products');
-    } else {
-      navigate('/register');
+  const [featuredProducts] = useState([
+    {
+      id: 1,
+      name: 'Áo Thun UEH 2025',
+      price: 250000,
+      image: 'https://shop.ueh.edu.vn/wp-content/uploads/2022/05/800x600-30.png',
+      category: 'Áo Thun'
+    },
+    {
+      id: 2,
+      name: 'Logo UEH Vàng',
+      price: 150000,
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png',
+      category: 'Phụ Kiện'
+    },
+    {
+      id: 3,
+      name: 'Ly Giữ Nhiệt UEH',
+      price: 180000,
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-17.png',
+      category: 'Ly'
+    },
+    {
+      id: 4,
+      name: 'Sổ Tay UEH',
+      price: 80000,
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-23.png',
+      category: 'Đồ Học Tập'
     }
-  };
+  ]);
+
+  useEffect(() => {
+    // Parallax effect
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const parallaxElements = document.querySelectorAll('[data-parallax]');
+      parallaxElements.forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-parallax') || '0.5');
+        const element = el as HTMLElement;
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const collections = [
+    {
+      title: 'Logo UEH',
+      description: 'Logo UEH được chế tác tinh xảo từ inox phủ vàng cao cấp, với khuy cài mặt sau chắc chắn và tiện dụng.',
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png',
+      position: 'left'
+    },
+    {
+      title: 'Áo Thun UEH',
+      description: 'Áo thun cotton kinh điển không bao giờ lỗi mốt. Thoáng mát, bền bỉ và được làm để trường tồn.',
+      image: 'https://shop.ueh.edu.vn/wp-content/uploads/2022/05/800x600-30.png',
+      position: 'right'
+    },
+    {
+      title: 'Ly UEH',
+      description: 'Ly UEH được thiết kế tiện lợi và tỉ mỉ từng chi tiết, có khả năng giữ nhiệt lâu.',
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-17.png',
+      position: 'left'
+    },
+    {
+      title: 'ĐỒ DÙNG HỌC TẬP',
+      description: 'Sổ tay, bút viết để tiếp thêm năng lượng cho hành trình học tập. Học thông minh, sống tốt hơn.',
+      image: 'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-23.png',
+      position: 'right'
+    }
+  ];
+
+  const lookbookImages = [
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-25.png',
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png',
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-211-510x610-1.png',
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-207-510x610-2.png',
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-500-510x610-1.png',
+    'https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-10.png'
+  ];
 
   return (
     <>
-      <Header showAuthButtons={!user} />
+      <Header />
       <div className="home-page">
         {/* Hero Section */}
-        <section className="hero-section">
-          <div className="hero-background">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-          </div>
-          
-          <div className="hero-content">
-            <div className="hero-badge">
-              <span className="badge-dot"></span>
-              Dành cho Sinh Viên
-            </div>
-            
-            <h1 className="hero-title">
-              Nền tảng mua bán
-              <span className="hero-highlight"> độc quyền</span>
-              <br />
-              dành cho sinh viên
-            </h1>
-            
-            <p className="hero-subtitle">
-              Kết nối cộng đồng sinh viên thông qua nền tảng thương mại điện tử 
-              hiện đại, an toàn và tiện lợi. Mua sắm thông minh, giá trị tối ưu.
-            </p>
-            
-            {user ? (
-              <div className="hero-user-section">
-                <div className="user-welcome-card">
-                  <div className="welcome-text">
-                    <span className="welcome-label">Xin chào trở lại</span>
-                    <h3 className="welcome-name">{user.fullName}</h3>
-                  </div>
-                </div>
-                
-                <div className="hero-actions-grid">
-                  <Link to="/all-products" className="action-card primary">
-                    <div className="action-content">
-                      <h4>Khám phá sản phẩm</h4>
-                      <p>Xem tất cả sản phẩm mới</p>
-                    </div>
-                    <div className="action-arrow">→</div>
-                  </Link>
-                  
-                  <Link to="/orders" className="action-card secondary">
-                    <div className="action-content">
-                      <h4>Đơn hàng của tôi</h4>
-                      <p>Theo dõi đơn hàng</p>
-                    </div>
-                    <div className="action-arrow">→</div>
-                  </Link>
-                  
-                  {user.role === 'admin' && (
-                    <Link to="/admin" className="action-card accent">
-                      <div className="action-content">
-                        <h4>Quản trị hệ thống</h4>
-                        <p>Truy cập dashboard</p>
-                      </div>
-                      <div className="action-arrow">→</div>
-                    </Link>
-                  )}
-                  
-                  {user.role === 'seller' && (
-                    <Link to="/seller" className="action-card accent">
-                      <div className="action-content">
-                        <h4>Seller Dashboard</h4>
-                        <p>Quản lý cửa hàng</p>
-                      </div>
-                      <div className="action-arrow">→</div>
-                    </Link>
-                  )}
-                </div>
-                
-                <button onClick={logout} className="btn-logout">
-                  Đăng xuất
-                </button>
+        <section style={{
+          position: 'relative',
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+          paddingTop: '80px',
+          backgroundColor: '#0d0f12'
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 20px',
+            width: '100%'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 2fr 1fr',
+              gap: '40px',
+              alignItems: 'center'
+            }}>
+              {/* Left: Mascot */}
+              <div data-parallax="0.3" style={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="100" cy="100" r="80" fill="#18b0b4" opacity="0.2"/>
+                  <circle cx="100" cy="100" r="60" fill="rgb(78, 160, 255)" opacity="0.3"/>
+                  <path d="M100 40 L120 80 L160 90 L130 120 L140 160 L100 140 L60 160 L70 120 L40 90 L80 80 Z" fill="#18b0b4"/>
+                </svg>
               </div>
-            ) : (
-              <div className="hero-actions">
-                <button onClick={handleGetStarted} className="btn-hero-primary">
-                  Bắt đầu ngay
-                  <span className="btn-arrow">→</span>
-                </button>
-                <Link to="/all-products" className="btn-hero-secondary">
-                  Xem sản phẩm
+
+              {/* Center: Main Text */}
+              <div style={{ textAlign: 'center' }}>
+                <h1 style={{
+                  fontSize: 'clamp(4rem, 10vw, 8rem)',
+                  fontWeight: '900',
+                  fontFamily: "'Montserrat', sans-serif",
+                  letterSpacing: '0.05em',
+                  lineHeight: '1',
+                  marginBottom: '0',
+                  color: '#f1f3f5'
+                }}>UNI</h1>
+                <h1 style={{
+                  fontSize: 'clamp(4rem, 10vw, 8rem)',
+                  fontWeight: '900',
+                  fontFamily: "'Montserrat', sans-serif",
+                  letterSpacing: '0.05em',
+                  lineHeight: '1',
+                  marginBottom: '0',
+                  color: '#f1f3f5'
+                }}>MERCH</h1>
+                <h1 style={{
+                  fontSize: 'clamp(4rem, 10vw, 8rem)',
+                  fontWeight: '900',
+                  fontFamily: "'Montserrat', sans-serif",
+                  letterSpacing: '0.05em',
+                  lineHeight: '1',
+                  color: '#18b0b4',
+                  marginBottom: '20px'
+                }}>CHO UEH</h1>
+                <p style={{
+                  fontSize: '1.5rem',
+                  fontWeight: '300',
+                  letterSpacing: '0.1em',
+                  marginBottom: '40px',
+                  color: '#f1f3f5'
+                }}>Mặc Đẹp. Học Giỏi.</p>
+                
+                <Link 
+                  to="/all-products" 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '20px 40px',
+                    backgroundColor: '#18b0b4',
+                    color: '#ffffff',
+                    textDecoration: 'none',
+                    borderRadius: '12px',
+                    fontSize: '1.2rem',
+                    fontWeight: '600',
+                    letterSpacing: '0.05em',
+                    transition: 'all 0.3s ease',
+                    border: '2px solid transparent'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.borderColor = '#18b0b4';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#18b0b4';
+                    e.currentTarget.style.borderColor = 'transparent';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  XEM SẢN PHẨM
+                  <ArrowRight size={24} />
                 </Link>
               </div>
-            )}
-          </div>
 
-          <div className="hero-visual">
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">5+</div>
-                <div className="stat-label">Sinh viên</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">10+</div>
-                <div className="stat-label">Sản phẩm</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">36%</div>
-                <div className="stat-label">Hài lòng</div>
+              {/* Right: Vertical Text */}
+              <div data-parallax="0.5" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                gap: '20px',
+                color: '#f1f3f5'
+              }}>
+                <div style={{
+                  writingMode: 'vertical-rl',
+                  fontSize: '2rem',
+                  fontWeight: '700',
+                  letterSpacing: '0.2em'
+                }}>2025</div>
+                <div style={{
+                  writingMode: 'vertical-rl',
+                  fontSize: '1.5rem',
+                  opacity: '0.6',
+                  letterSpacing: '0.2em'
+                }}>GIỚI HẠN</div>
+                <div style={{
+                  writingMode: 'vertical-rl',
+                  fontSize: '2rem',
+                  fontWeight: '700',
+                  letterSpacing: '0.2em'
+                }}>CAMPUS</div>
+                <div style={{
+                  writingMode: 'vertical-rl',
+                  fontSize: '1.5rem',
+                  fontWeight: '700',
+                  letterSpacing: '0.2em'
+                }}>BỘ SƯU TẬP</div>
+                <div style={{
+                  writingMode: 'vertical-rl',
+                  fontSize: '1.5rem',
+                  color: '#18b0b4',
+                  fontWeight: '700',
+                  letterSpacing: '0.2em',
+                  marginTop: '20px'
+                }}>RA MẮT — 2025</div>
               </div>
             </div>
           </div>
