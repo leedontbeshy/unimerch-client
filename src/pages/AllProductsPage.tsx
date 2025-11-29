@@ -242,8 +242,14 @@ const AllProductsPage: React.FC = () => {
 
           {/* Product Count */}
           <div className="products-count">
-            Hiển thị {products.length > 0 ? ((currentPage - 1) * ITEMS_PER_PAGE + 1) : 0}-
-            {Math.min(currentPage * ITEMS_PER_PAGE, totalProducts)} trong tổng số {totalProducts} sản phẩm
+            {totalProducts === 0 ? (
+              <>Hiển thị 0-0 trong tổng số 0 sản phẩm</>
+            ) : (
+              <>
+                Hiển thị {((currentPage - 1) * ITEMS_PER_PAGE + 1)}-
+                {((currentPage - 1) * ITEMS_PER_PAGE + products.length)} trong tổng số {totalProducts} sản phẩm
+              </>
+            )}
           </div>
 
           {/* Error Message */}
